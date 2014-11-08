@@ -1,0 +1,4 @@
+IsingTrade
+==========
+
+A trading game.
