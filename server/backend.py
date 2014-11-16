@@ -1,9 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
+# import json
 
 LENGTH = 10
 account = 10000
 position = np.array([[0]*LENGTH]*LENGTH)
+# current = {'account':account,'position':position}
 
 
 class electron():
@@ -23,12 +25,12 @@ class electron():
 
 
 def operation(order, account, position):
-    if order[0] == 'purchase':
+    if order[0] == ('purchase' or 'p'):
         i, j = eval(order[1]), eval(order[2])
         print 'You choose to purchase (%d, %d)' % (i, j)
         account -= A[i, j].value
         position[i, j] += 1
-    elif order[0] == 'sell':
+    elif order[0] == ('sell' or 's'):
         i, j = eval(order[1]), eval(order[2])
         if position[i, j] > 0:
             print 'You choose to sell (%d, %d)' % (i, j)
@@ -61,7 +63,10 @@ if __name__ == '__main__':
                 A[i, j].updateValue()
         x = raw_input('Enter operation:').split(' ')
         account, position = operation(x, account, position)
+
         print 'Money: ', account
+        # with open('save.json', 'w') as output:
+        #     json.dump(current, output)
         mat = np.matrix([[A[i, j].value for j in range(LENGTH)]
                         for i in range(LENGTH)])
         plt.imshow(mat, interpolation='nearest', cmap='RdYlGn')
