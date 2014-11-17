@@ -12,7 +12,7 @@ In Ising model, an array of electrons fluctuate according to the laws of quantum
 ## Algorithmic Trading
 <img src="http://blog.xcelerit.com/wp-content/uploads/2013/07/algotrading.jpg" title="Fetched from http://blog.xcelerit.com">
 
-When faced with large amount of informations, algorithmic implemented in computer programs can help traders analyze them and improve trading strategy.
+When faced with large amount of informations, algorithms implemented in computer programs can help traders analyze them and improve trading strategy.
 
 # So what is IsingTrade?
 
@@ -22,4 +22,4 @@ IsingTrade combines physics and algorithmic trading to teach students about soli
 
 Tzu-Chen Huang ```b01202006@ntu.edu.tw```
 
-Si-Chi Lin
+Si-Zhi Lin
