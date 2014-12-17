@@ -5,10 +5,29 @@
 </script>
 </head>
 <body onload = "Init();">
-<data style = "position: absolute; left: 20px; top: 600px;">teamA</data>
-<input id = "teamA" type = "text" style = "position: absolute; left: 100px; top: 600px;" value = ""></input>
-<data style = "position: absolute; left: 20px; top: 630px;">teamB</data>
-<input id = "teamB" type = "text" style = "position: absolute; left: 100px; top: 630px;" value = ""></input>
-<input type = "button" style = "position: absolute; left: 100px; top: 680px;" value = "RUN"" onclick = "change();"></input>
-<textarea cols = 70 rows = 10 style = "position: absolute; left: 500px; top: 600px;"></textarea>
+<div id = "display" ondblclick="DClick();"></div> <!--onclick="Click();"-->
+<data style = "position: absolute; left: 40px; top: 700px;">TeamA</data>
+<input id = "teamA" type = "text" style = "position: absolute; left: 120px; top: 700px; width: 100; text-align: right;" value = ""></input>
+<data style = "position: absolute; left: 40px; top: 730px;">TeamB</data>
+<input id = "teamB" type = "text" style = "position: absolute; left: 120px; top: 730px; width: 100; text-align: right;" value = ""></input>
+<data style = "position: absolute; left: 40px; top: 800px;">X</data>
+<input id = "X" type = "text" style = "position: absolute; left: 120px; top: 800px;" value = ""></input>
+<data style = "position: absolute; left: 40px; top: 830px;">Y</data>
+<input id = "Y" type = "text" style = "position: absolute; left: 120px; top: 830px;" value = ""></input>
+<data style = "position: absolute; left: 340px; top: 800px;">Possession</data>
+<input id = "possession" type = "text" style = "position: absolute; left: 420px; top: 800px;" value = ""></input>
+<data style = "position: absolute; left: 340px; top: 830px;">Market</data>
+<input id = "market" type = "text" style = "position: absolute; left: 420px; top: 830px;" value = ""></input>
+<data style = "position: absolute; left: 40px; top: 900px;">Amount</data>
+<input id = "amount" type = "text" style = "position: absolute; left: 120px; top: 900px;" value = ""></input>
+<data style = "position: absolute; left: 40px; top: 930px;">Price</data>
+<input id = "price" type = "text" style = "position: absolute; left: 120px; top: 930px;" value = ""></input>
+<data style = "position: absolute; left: 340px; top: 900px;">Your Cash</data>
+<input id = "cash" type = "text" style = "position: absolute; left: 420px; top: 900px;" value = ""></input>
+<input type = "button" style = "position: absolute; left: 420px; top: 930px; width: 70;" value = "Buy"" onclick = "Buy();"></input>
+<input type = "button" style = "position: absolute; left: 520px; top: 930px; width: 70;" value = "Sell"" onclick = "Sell();"></input>
+<data style = "position: absolute; left: 40px; top: 1000px;">Deal:</data>
+<input id = "status" type = "text" style = "position: absolute; left: 120px; top: 1000px; width: 400;" value = ""></input>
+<data style = "position: absolute; left: 40px; top: 1100px;">Strategy:</data>
+<textarea cols = 70 rows = 10 style = "position: absolute; left: 40px; top: 1130px;"></textarea>
 </html>
