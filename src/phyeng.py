@@ -1,15 +1,13 @@
 import numpy as np
 import zmq
+from itertools import chain
+from time import sleep
 
-INFORMATION_RETRIEVABLE = 5
-LENGTH = 10
-account = 10000
+LENGTH = 30
 
-position = [[0 for x in range(LENGTH)]
-            for x in range(LENGTH)]
-remember = [[[0 for x in range(LENGTH)]
-            for x in range(LENGTH)]
-            for x in range(INFORMATION_RETRIEVABLE)]
+
+def setSpin(r):
+    return np.random.choice([1]*(11+int(r*10)) + [0]*11)
 
 
 class electron():
@@ -22,45 +20,71 @@ class electron():
         return self.spin
 
     def updateValue(self):
-        self.value += self.spin * 10
+        self.value += (self.spin * 2 - 1) * 10
         if self.value < 0:
             self.doomed = True
 
-    def updateSpin(self):
-        self.spin = setSpin()
+    def updateSpin(self, r):
+        self.spin = setSpin(r)
 
     @property
     def doomed(self):
         return self.doomed
 
 
-A = [[electron(np.random.randint(2)*2-1) for x in range(LENGTH)]
-     for x in range(LENGTH)]
+A = np.ndarray((LENGTH, LENGTH), dtype=np.object)
+for i in xrange(LENGTH):
+    for j in xrange(LENGTH):
+        A[i, j] = electron(setSpin(0))
 
+def ratio(i, j):
+    s = 0
+    t = 0.
+    if i > 0:
+        s += A[i-1, j].spin
+        t += 1
+    if i < LENGTH-1:
+        s += A[i+1, j].spin
+        t += 1
+    if j > 0:
+        s += A[i, j-1].spin
+        t += 1
+    if j < LENGTH-1:
+        s += A[i, j+1].spin
+        t += 1
+    return s/t
 
 def update(lattice):
-    # a queue for last n days of information
-    for i in range(-INFORMATION_RETRIEVABLE+1, 0):
-        remember[-i] = remember[-i-1]
-
     for i in range(LENGTH):
         for j in range(LENGTH):
-            remember[0][i, j] = lattice[i, j].value
-            lattice[i, j].updateSpin()
+            lattice[i, j].updateSpin(ratio(i, j))
             lattice[i, j].updateValue()
 
 
 def main():
     context = zmq.Context()
-    socket = context.socket(zmq.PUSH)
-    socket.connect("tcp://127.0.0.1:5555")
-    socket_todj = context.socket(zmq.REP)
-    socket_todj.connect("tcp://127.0.0.1:5557")
+    socket = context.socket(zmq.REP)
+    socket.bind("tcp://127.0.0.1:5557")
+    in_socket = context.socket(zmq.PULL)
+    in_socket.connect("tcp://127.0.0.1:9241")
+    out_socket = context.socket(zmq.PUSH)
+    out_socket.bind("tcp://127.0.0.1:9242")
+    (message_type, session_id, data) = in_socket.recv_multipart()
     while True:
-        # potential flooding the channel
-        st = socket_todj.recv()
+        st = socket.recv(10)
         if st == 'REQUEST':
-            socket_todj.send_pyobj([[x.spin for x in y] for y in A])
+            print "Request accepted."
+            socket.send_pyobj([[[x.spin for x in y] for y in A], [[x.value for x in y] for y in A]])
+            print "Response sent."
+        update(A)
+        out_socket.send_multipart('message',
+                                  session_id,
+                                  ''.join(map(str, list(chain.from_iterable(A)))))
+        sleep(50)
+#        socket_web.send(A)
+#    socket_web.disconnect("tcp://127.0.0.1:5555")
+    socket.unbind("tcp://127.0.0.1:5557")
+    context.destroy()
 
 if __name__ == '__main__':
     main()

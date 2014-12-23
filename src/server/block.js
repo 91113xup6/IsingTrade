@@ -6,7 +6,7 @@ function Init(){
 	document.body.appendChild(table);
 	table.id = "TablePrice";
 	var capt = table.createCaption();
-	capt.innerHTML = "Pcrice"
+	capt.innerHTML = "Price"
 	table.frame = "box";
 	table.rules = "all";
 	table.style.position = "absolute";

@@ -4,10 +4,8 @@ import strategy
 import time
 
 
-def show_position():
-    plt.imshow(position, interpolation='nearest', cmap='gray')
-    plt.title('position')
-    plt.show()
+def getPosition(team):
+    return None
 
 
 def process(message, state):
