@@ -1,3 +1,5 @@
+// Connection
+
 $(function () {
 	var $log = $('#log');
 	var log = function (message) {
@@ -74,8 +76,21 @@ $(function () {
     });
 });
 
+// Start-up
+
 function Init(){
-	
+
+	var parts = window.location.search.substr(1).split("&");
+	var $_GET = {};
+	for (var i = 0; i < parts.length; i++) {
+		var temp = parts[i].split("=");
+		$_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+	}
+	var teamtext = d3.select("body")
+		.append("h1")
+		.attr("align", "center")
+		.text($_GET["team"]);
+
 
 	spin = [ 1.,  1.,  1.,  0.,  1.,  0.,  1.,  0.,  0.,  0.,  0.,  1.,  0.,
         1.,  0.,  1.,  1.,  0.,  0.,  1.,  0.,  1.,  0.,  0.,  0.,  1.,
@@ -84,13 +99,14 @@ function Init(){
         1.,  0.,  1.,  1.,  1.,  0.,  0.,  1.,  0.,  0.,  0.,  1.,  1.,
         0.,  1.,  1.,  0.,  0.,  1.,  0.,  1.,  0.,  0.,  1.,  1.,  1.,
         0.,  1.,  0.,  1.,  0.,  1.,  1.,  1.,  1.,  0.,  0.,  0.,  1.,
-        1.,  0.,  0.,  0.,  0.,  1.,  0.,  1.,  0.];
+			 1.,  0.,  0.,  0.,  0.,  1.,  0.,  1.,  0.];
+	
 	var position = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-       0, 0, 0, 0, 0, 0, 0, 0]
-	;
+					0, 0, 0, 0, 0, 0, 0, 0];
+	
 	value = [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
@@ -98,16 +114,16 @@ function Init(){
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
-       200, 200, 200, 200, 200, 200, 200, 200, 200]
-	;
+			 200, 200, 200, 200, 200, 200, 200, 200, 200];
+	
 	var money = 10000;
 	
 	var width = 500,
 		height = 500,
 		cellSize = 50; // cell size
 
-	var dialog1 = d3.select("body")
-		.append("p")
+	var moneytext = d3.select("body")
+		.append("h1")
 		.attr("align", "center")
 		// .attr("transform", "translate(0, 0)")
 		.text("Money: "+money);
@@ -133,8 +149,6 @@ function Init(){
 		.attr("y", function(d){return Math.floor(d/10)*cellSize;});
 		
 	function showinfo(data, position){
-//		return function (){
-//			console.log(d3.mouse(this));
 		svg1.append("text")
 			.attr("class", "body")
 			.attr("transform", "translate(" + position + ")")
@@ -144,7 +158,6 @@ function Init(){
 			.style("opacity", 0)
 			.remove();
 		d3.event.preventDefault();
-//		};
 	}
 	
 	spins.filter(function(d) { return d+1; })
@@ -159,10 +172,10 @@ function Init(){
 		.attr("transform", "translate(150, 0)");
 		
 	function purchase(data){
-		if (position[data] < 9){
+		if (position[data] < 9 && money>=value[data+1]){
 			money -= value[data+1];
 			position[data] += 1;
-			dialog1.text("Money: "+money);
+			moneytext.text("Money: "+money);
 			posis.filter(function(d) { return d+1; })
 				.attr("class", function(d) { return "posi t" + position[d]; });
 		}	
@@ -173,7 +186,7 @@ function Init(){
 		if (position[data] > 0){
 			money += value[data+1]
 			position[data] -= 1;
-			dialog1.text("Money: "+money);
+			moneytext.text("Money: "+money);
 			posis.filter(function(d) { return d+1; })
 				.attr("class", function(d) { return "posi t" + position[d]; });
 		}
@@ -200,7 +213,7 @@ function Init(){
 function Change(data, rect){
 	spin = data.split("");
 	for (var i = 0; i < 100; i++)
-		value[i] += eval(spin[i])*10;
+		value[i] += eval(spin[i])*20-10;
 	var svg = d3.select("body").selectAll("svg")
 	spins.filter(function(d) { return d+1; })
 		.attr("class", function(d) { return "spin q" + spin[d]; })

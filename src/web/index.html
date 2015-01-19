@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 
 <style>
-body {
-  font: 18px sans-serif;
+  body {
+  font: Georgia, "Cambria", 18px serif;
+  background-color: #999999;
   shape-rendering: crispEdges;
-}
+  }
 
-.spin {
+  .spin {
   fill: #fff;
   stroke: #ccc;
-}
-.posi{
-fill: #fff;
-stroke: #ccc;
-}
+  }
+  
+  .posi{
+  fill: #fff;
+  stroke: #ccc;
+  }
 
-.value {
+  .value {
   fill: none;
   stroke: #000;
   stroke-width: 2px;
-}
+  }
 
-.RdYlGn .q0{fill:rgb(165,0,38)}
-.RdYlGn .q1{fill:rgb(0,104,55)}
+
+.RdYlGn .q1{fill:rgb(165,0,38)}
+.RdYlGn .q0{fill:rgb(0,104,55)}
 .BW .t0{fill:rgb(255,255,255)}
 .BW .t1{fill:rgb(230,230,230)}
 .BW .t2{fill:rgb(205,205,205)}
@@ -38,14 +41,22 @@ stroke: #ccc;
 <html>
   <head>
 	<title>PhysCamp</title>
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+	<!-- <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css"> -->
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    
+
+	<!-- <script src="d3.min.js"></script> -->
 	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
 	<script src="sockjs-0.3.js"></script>
 	<script src="client.js"></script>
   </head>
   <body onload="Init();">
-	<button id="connect">Connect</button>
-	<button id="disconnect">Disconnect</button>
 
+	<button id="connect" class="pure-button pure-button-primary">Connect</button>
+	<button id="disconnect" class="pure-button pure-button-primary">Disconnect</button>
+	<button id="connect" class="pure-button pure-button-primary">Strategy A</button>
+	<button id="connect" class="pure-button pure-button-primary">Strategy B</button>
+	<button id="connect" class="pure-button pure-button-primary">Strategy C</button>
   </body>
 </html>
