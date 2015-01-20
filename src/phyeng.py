@@ -38,9 +38,9 @@ def iter_(mat, T, B):
     sample = np.random.random((100, L, L))
     sample = sample // np.tanh(T/2000.)
     sample_change = np.logical_not(np.logical_xor(mat, sample))
-    sample_energy = map(energy, sample_change, np.ones_like(100)*B)
+    sample_energy = map(energy, sample_change, np.ones(100)*B)
     mat_energy = energy(mat, B)
-    prob = np.exp(-(sample_energy-np.ones_like(100)*mat_energy)*L**2/T/3600)
+    prob = np.exp(-(sample_energy-np.ones(100)*mat_energy)*L**2/T/3600)
     prob /= np.sum(prob)
     dist = rv_discrete(values=(range(100), prob))
     return sample_change[dist.rvs()]
