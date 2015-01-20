@@ -115,7 +115,7 @@ function Init(){
 	var svg1 = d3.select("body")
 		.append("svg")
 		.data("S")
-		.attr("width", width+50)
+		.attr("width", width+100)
 		.attr("height", height+5)
 		.attr("class", "RdYlGn")
 		.append("g")
@@ -151,11 +151,11 @@ function Init(){
 	
 	var svg2 = d3.select("body")
 		.append("svg")
-		.attr("width", width+200)
+		.attr("width", width+100)
 		.attr("height", height+5)
 		.attr("class", "BW")
 		.append("g")
-		.attr("transform", "translate(150, 0)");
+		.attr("transform", "translate(50, 0)");
 	
 	var posis = svg2.selectAll(".posi")
 		.data(d3.range(0,100))
