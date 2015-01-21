@@ -87,9 +87,9 @@ def command_loop():
             sleep(.01)
             order = command_channel.recv_string()
             if order[0] == 'T':
-                T = eval(order[0:])
+                T = eval(order[1:])
             elif order[0] == 'B':
-                B = eval(order[0:])    
+                B = eval(order[1:])    
     except KeyboardInterrupt:
         pass
 
