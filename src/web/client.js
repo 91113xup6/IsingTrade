@@ -231,6 +231,10 @@ function purchase(data){
 		money -= value[data];
 		position[data] += 1;
 		moneytext.text("Money: "+money);
+		if (money<5000){
+			moneytext.style("color","red");
+		}
+
 		posis.filter(function(d) { return d+1; })
 			.attr("class", function(d) { return "posi t" + position[d]; });
 	}	
@@ -242,8 +246,8 @@ function sell(data){
 		money += value[data]
 		position[data] -= 1;
 		moneytext.text("Money: "+money);
-		if (money<5000){
-			moneytext.style("color","red");
+		if (money>5000){
+			moneytext.style("color","none");
 		}
 		posis.filter(function(d) { return d+1; })
 			.attr("class", function(d) { return "posi t" + position[d]; });
