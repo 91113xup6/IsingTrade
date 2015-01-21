@@ -86,7 +86,24 @@ def command_loop():
         pass
 
 
+def in_loop():
+    global session_id
+    global sent
+    try:
+        while True:
+            sleep(.01)
+            (message_type, session_id, data) = in_socket.recv_multipart()
+            print(message_type)
+            if message_type == b'connect':#.encode('utf-8'):
+                sent = True
+            if message_type == b'disconnect':#.encode('utf-8'):
+                sent = False
+    except KeyboardInterrupt:
+        pass
+
 def main():
+    global sent
+    sent = False
     # plt.ion()
     # fig = plt.figure()
     # ax = fig.add_subplot(111)
@@ -100,18 +117,24 @@ def main():
     # command_channel.bind("tcp://127.0.0.1:5558")
     # t_command = threading.Thread(target=command_loop)
     # t_command.start()
+    global in_socket
     in_socket = context.socket(zmq.PULL)
     in_socket.connect("tcp://127.0.0.1:9241")
+    t_in = threading.Thread(target=in_loop)
+    t_in.start()
+
     out_socket = context.socket(zmq.PUSH)
     out_socket.connect("tcp://127.0.0.1:9242")
-    (message_type, session_id, data) = in_socket.recv_multipart()
+    # (message_type, session_id, data) = in_socket.recv_multipart()
+    # sent = True
     # print("received.")
     try:
         while True:
             sleep(1)
-            out_socket.send_multipart(['message'.encode('utf-8'), session_id,
-                                       bytes(''.join(map(lambda x: str(int(x)),
-                                                         slice_(A.spin).flatten())), 'utf-8')
+            if sent:
+                out_socket.send_multipart(['message'.encode('utf-8'), session_id,
+                                           bytes(''.join(map(lambda x: str(int(x)),
+                                                             slice_(A.spin).flatten())), 'utf-8')
                                    ])
     except KeyboardInterrupt:
         pass

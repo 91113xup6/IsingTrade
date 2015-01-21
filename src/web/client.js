@@ -6,7 +6,7 @@ function Init(){
 		var temp = parts[i].split("=");
 		$_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
 	}
-
+	sta = false, stb = false, stc = false;
 	spin = [ 1.,  1.,  1.,  0.,  1.,  0.,  1.,  0.,  0.,  0.,  0.,  1.,  0.,
         1.,  0.,  1.,  1.,  0.,  0.,  1.,  0.,  1.,  0.,  0.,  0.,  1.,
         0.,  0.,  0.,  1.,  1.,  1.,  1.,  0.,  1.,  0.,  0.,  0.,  0.,
@@ -31,7 +31,7 @@ function Init(){
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
 			 200, 200, 200, 200, 200, 200, 200, 200, 200];
 	
-	money = 10000;
+	money = 100000;
 	
 	var width = 500,
 		height = 500,
@@ -46,10 +46,12 @@ function Init(){
 		.on("click", function(d){switch(d){ case "connect":
 											console.log('connect button clicked.');
 											Connection.connect();
-											d3.event.preventDefault();
+											break;
+//											d3.event.preventDefault();
 											case "disconnect":
 											Connection.disconnect();
-											d3.event.preventDefault();
+											break;
+//											d3.event.preventDefault();
 										  };
 								})
 		.attr("id", function(d){return d;})
@@ -66,12 +68,16 @@ function Init(){
 
 	
 	options = strategy_select.selectAll("option")
-		.data(["Select Strategy", "A", "B", "C"])
+		.data(["Select Strategy", "A", "B", "No"])
 		.enter()
 		.append("option")
 		.attr("value", function(){})
 		.text(function(d){return d;});
 
+	var groupsell = upPanel.append("button")
+		.on("click", sell_all)
+		.text("all out");
+	
 	// $('.stg').fancySelect();
 	var teamtext = d3.select("body")
 		.append("h1")
@@ -128,7 +134,7 @@ function Init(){
 		.attr("x", function(d){return d%10*cellSize;})
 		.attr("y", function(d){return Math.floor(d/10)*cellSize;})
 		.on("click", function(d){purchase(d);})
-		.on("contextmenu", function(d){sell(d);});
+		.on("contextmenu", function(d){sell(d);	d3.event.preventDefault();});
 	
 	posis.filter(function(d) { return d+1; })
 		.attr("class", function(d) { return "posi t" + position[d]; });
@@ -137,6 +143,13 @@ function Init(){
 
 }
 
+
+function sell_all(){
+	for(i=0;i<100;i++){
+		while(position[i]>0)
+			sell(i);
+	}
+}
 // function exaggerate(data){
 // 	posis.selectAll(d)
 // 		.filter(); //TODO
@@ -145,13 +158,20 @@ function Init(){
 function change(){
 	var selectIndex = strategy_select.property('selectedIndex'),
 		data = options[0][selectIndex].__data__;
+	console.log("you selected "+data);
 	switch(data){
 	case "A":
 		sta = true;
+		stb = false;
+		break;
 	case "B":
-		stb = true; 
-	case "C":
-		stc = true;
+		sta = false;
+		stb = true;
+		break;
+	case "No":
+	 	sta = false;
+	 	stb = false;
+		break;
 	}
 }
 
@@ -178,7 +198,7 @@ function purchase(data){
 }
 
 function sell(data){
-	d3.event.preventDefault();
+
 	if (position[data] > 0){
 		money += value[data+1]
 		position[data] -= 1;
@@ -198,8 +218,19 @@ function Change(data, rect){
 			if (position[i]>0 && spin[i] == '1'){
 				sell(i);
 			}
-			if (money>0 && spin[i] == '0'){
-				purchase(i);
+			if (spin[i] == '0'){
+				if(money>value[i])
+					purchase(i);
+			}
+		}
+		if (stb){
+			if (spin[i]=='1'){
+				if(money>value[i])
+					purchase(i);
+			}
+			if (spin[i]=='0'){
+				if(position[i] > 0)
+					sell(i);
 			}
 		}
 	}
