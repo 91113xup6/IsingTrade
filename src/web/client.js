@@ -1,89 +1,5 @@
-// Connection
-
-$(function () {
-	var $log = $('#log');
-	var log = function (message) {
-		if (console && console.log) {
-			console.log(message);
-		}
-		$log.append($('<li></li>').text(message))
-	}
-	var State = {
-		isConnected: false,
-		connected: function () {
-			this.isConnected = true;
-			$('#connect').attr('disabled', true);
-			$('#disconnect').attr('disabled', false);
-			$('#send').attr('disabled', false);
-			$('#status').html("Connected");
-			
-		},
-		
-		disconnected: function () {
-			this.isConnected = false;
-			$('#connect').attr('disabled', false);
-			$('#disconnect').attr('disabled', true);
-			$('#send').attr('disabled', true);
-			$('#status').html("Disconnected");
-		}
-	};
-
-	var Connection = {
-		socket: null,
-		connect: function () {
-			var socket = this.socket = new SockJS(location.protocol + '//' + location.host + '/');
-			socket.onopen = function () {
-				log('Connection opened');
-				log('Sending: echo');
-				socket.send("echo");
-				State.connected();
-			};
-			socket.onmessage = function (e) {
-				log('Recieved: ' + e.data);
-			//	log(e.data);
-				Change (e.data);
-			}
-			socket.onclose = function () {
-				log('Connection closed');
-				State.disconnected();
-			}
-		},
-		disconnect: function () {
-			if (this.socket) {
-				this.socket.close()
-				this.socket = null;
-			}
-		},
-		send: function (message) {
-            log("Sending: " + message)
-            this.socket.send(message);
-        }
-	}
-	var $message = $('#message')
-	$('#send-form').submit(function (e) {
-        Connection.send($message.val());
-        e.preventDefault();
-    });
-
-    $('#connect').click(function (e) {
-        Connection.connect();
-        e.preventDefault();
-    });
-
-    $('#disconnect').click(function (e) {
-        Connection.disconnect();
-        e.preventDefault();
-    });
-
-	$('#sta').click(function(e){
-		Strategy('a');
-	});
-});
-
-// Start-up
-
 function Init(){
-
+//	Connection.connect();
 	var parts = window.location.search.substr(1).split("&");
 	var $_GET = {};
 	for (var i = 0; i < parts.length; i++) {
@@ -121,25 +37,40 @@ function Init(){
 		height = 500,
 		cellSize = 50; // cell size
 	var upPanel = d3.select("body").append("div")
-		.style("height", 50+"px");
+		.style("height", 25+"px");
 
-	upPanel.selectAll("input")
-		.data(["Connect", "Disconnect", "Strategy"])
+	upPanel.selectAll("button")
+		.data(["connect", "disconnect"])
 		.enter()
+		.append("button")
+		.on("click", function(d){switch(d){ case "connect":Connection.connect();
+											case "disconnect":Connection.disconnect();
+										  };})
+		.attr("id", function(d){return d;})
+		.attr("disabled", function(d){switch(d){case "connect": return "false";
+												case "disconnect": return "true";
+											   };})
+		.text(function(d){return d;});
+	var strategy_select = upPanel.append("select")
+		.attr("name", "strategy")
+		.text("STRATEGY")
+	strategy_select.selectAll("option")
+		.data(["Select Strategy", "A", "B", "C"])
+		.enter()
+		.append("option")
+		.attr("value", function(){})
 
-		.append("input")
-		.attr("type", "button")
-		.attr("value", function(d){return d;})
+		.text(function(d){return d;})
 
 	var teamtext = d3.select("body")
 		.append("h1")
+		.attr("class", "fontawesome-user")
 		.attr("align", "center")
 		.text($_GET["team"]);
 
 	
 	moneytext = d3.select("body")
-		.append("p")
-		.attr("class", "fontawesome-user")
+		.append("h1")
 		.attr("align", "center")
 		// .attr("transform", "translate(0, 0)")
 		.text("Money: "+money);
@@ -148,10 +79,10 @@ function Init(){
 		.data("S")
 		.enter().append("svg")
 		.attr("width", width+50)
-		.attr("height", height)
+		.attr("height", height+50)
 		.attr("class", "RdYlGn")
 		.append("g")
-		.attr("transform", "translate(50, 0)")
+		.attr("transform", "translate(50, 50)")
 
 	spins = svg1.selectAll(".spin")
 		.data(d3.range(0,100))
@@ -169,10 +100,10 @@ function Init(){
 	svg2 = d3.select("body")
 		.append("svg")
 		.attr("width", width+150)
-		.attr("height", height)
+		.attr("height", height+50)
 		.attr("class", "BW")
 		.append("g")
-		.attr("transform", "translate(150, 0)");
+		.attr("transform", "translate(150, 50)");
 	
 	posis = svg2.selectAll(".posi")
 		.data(d3.range(0,100))
@@ -240,3 +171,87 @@ function Change(data, rect){
 		.attr("class", function(d) { return "spin q" + spin[d]; })
 
 }
+
+//$(function () {
+	// var $log = $('#log');
+	// var log = function (message) {
+	// 	if (console && console.log) {
+	// 		console.log(message);
+	// 	}
+	// 	$log.append($('<li></li>').text(message))
+	// }
+	var State = {
+		isConnected: false,
+		connected: function () {
+			this.isConnected = true;
+			d3.selectAll("#connect").attr("disabled", true);
+			d3.selectAll("#disconnect").attr("disabled", false);
+			// $('#connect').attr('disabled', true);
+			// $('#disconnect').attr('disabled', false);
+			// $('#send').attr('disabled', false);
+			// $('#status').html("Connected");
+			
+		},
+		
+		disconnected: function () {
+			this.isConnected = false;
+			d3.selectAll("#connect").attr("disabled", false);
+			d3.selectAll("#disconnect").attr("disabled", true);
+			// $('#connect').attr('disabled', false);
+			// $('#disconnect').attr('disabled', true);
+			// $('#send').attr('disabled', true);
+			// $('#status').html("Disconnected");
+		}
+	};
+
+	var Connection = {
+		socket: null,
+		connect: function () {
+			var socket = this.socket = new SockJS(location.protocol + '//' + location.host + '/');
+			socket.onopen = function () {
+				// log('Connection opened');
+				// log('Sending: echo');
+				socket.send("echo");
+				State.connected();
+			};
+			socket.onmessage = function (e) {
+				// log('Recieved: ' + e.data);
+				// log(e.data);
+				Change (e.data);
+			}
+			socket.onclose = function () {
+				// log('Connection closed');
+				State.disconnected();
+			}
+		},
+		disconnect: function () {
+			if (this.socket) {
+				this.socket.close()
+				this.socket = null;
+			}
+		},
+		send: function (message) {
+            // log("Sending: " + message)
+            this.socket.send(message);
+        }
+	};
+		// var $message = $('#message');
+	// $('#send-form').submit(function (e) {
+    //     Connection.send($message.val());
+    //     e.preventDefault();
+    // });
+
+    // $('#connect').click(function (e) {
+    //     Connection.connect();
+    //     e.preventDefault();
+    // });
+
+    // $('#disconnect').click(function (e) {
+    //     Connection.disconnect();
+    //     e.preventDefault();
+    // });
+
+	// $('#sta').click(function(e){
+	// 	Strategy('a');
+	// });
+//	});
