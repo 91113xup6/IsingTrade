@@ -119,7 +119,7 @@ function Init(){
 	
 	spins.filter(function(d) { return d+1; })
 		.attr("class", function(d) { return "spin q" + spin[d]; });
-	
+
 	svg2 = d3.select("body")
 		.append("svg")
 		.attr("width", width+150)
@@ -242,6 +242,9 @@ function sell(data){
 		money += value[data]
 		position[data] -= 1;
 		moneytext.text("Money: "+money);
+		if (money<5000){
+			moneytext.style("color","red");
+		}
 		posis.filter(function(d) { return d+1; })
 			.attr("class", function(d) { return "posi t" + position[d]; });
 	}
@@ -282,7 +285,8 @@ function Change(data_s, data_v){
 
 	var svg = d3.select("body").selectAll("svg")
 	spins.filter(function(d) { return d+1; })
-		.attr("class", function(d) { return "spin q" + spin[d]; })
+		.attr("class", function(d) { return "spin q" + spin[d]; });
+		
 
 
 }
