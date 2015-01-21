@@ -20,10 +20,10 @@ from time import sleep
 from scipy.stats import rv_discrete
 # import matplotlib.pyplot as plt
 
-from numba import jit
+# from numba import jit
 L = 20
 T = 10
-B = 1
+B = 0
 
 
 def slice_(A, L):
@@ -32,13 +32,13 @@ def slice_(A, L):
                   .reshape(-1, L/10, L/10), (1, 2)).reshape(10, 10) // (L**2/200)
 
 
-@jit
+# @jit
 def iter_(mat, T, B):
     L = mat.shape[0]
     sample = np.random.random((100, L, L))
     sample = sample // np.tanh(T/2000.)
     sample_change = np.logical_not(np.logical_xor(mat, sample))
-    sample_energy = map(energy, sample_change, np.ones(100)*B)
+    sample_energy = list(map(energy, sample_change, np.ones(100)*B))
     mat_energy = energy(mat, B)
     prob = np.exp(-(sample_energy-np.ones(100)*mat_energy)*L**2/T/3600)
     prob /= np.sum(prob)
@@ -46,7 +46,7 @@ def iter_(mat, T, B):
     return sample_change[dist.rvs()]
 
 
-@jit
+# @jit
 def energy(mat, B):
     mat = mat * 2 - 1
     return np.sum(mat)*B + np.sum(np.abs(np.diff(mat))) + np.sum(np.abs(np.diff(mat.T)))

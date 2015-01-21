@@ -74,6 +74,10 @@ $(function () {
         Connection.disconnect();
         e.preventDefault();
     });
+
+	$('#sta').click(function(e){
+		Strategy('a');
+	});
 });
 
 // Start-up
@@ -86,11 +90,6 @@ function Init(){
 		var temp = parts[i].split("=");
 		$_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
 	}
-	var teamtext = d3.select("body")
-		.append("h1")
-		.attr("align", "center")
-		.text($_GET["team"]);
-
 
 	spin = [ 1.,  1.,  1.,  0.,  1.,  0.,  1.,  0.,  0.,  0.,  0.,  1.,  0.,
         1.,  0.,  1.,  1.,  0.,  0.,  1.,  0.,  1.,  0.,  0.,  0.,  1.,
@@ -101,7 +100,7 @@ function Init(){
         0.,  1.,  0.,  1.,  0.,  1.,  1.,  1.,  1.,  0.,  0.,  0.,  1.,
 			 1.,  0.,  0.,  0.,  0.,  1.,  0.,  1.,  0.];
 	
-	var position = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	position = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -116,19 +115,36 @@ function Init(){
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
 			 200, 200, 200, 200, 200, 200, 200, 200, 200];
 	
-	var money = 10000;
+	money = 10000;
 	
 	var width = 500,
 		height = 500,
 		cellSize = 50; // cell size
+	var upPanel = d3.select("body").append("div")
+		.style("height", 50+"px");
 
-	var moneytext = d3.select("body")
+	upPanel.selectAll("input")
+		.data(["Connect", "Disconnect", "Strategy"])
+		.enter()
+
+		.append("input")
+		.attr("type", "button")
+		.attr("value", function(d){return d;})
+
+	var teamtext = d3.select("body")
 		.append("h1")
+		.attr("align", "center")
+		.text($_GET["team"]);
+
+	
+	moneytext = d3.select("body")
+		.append("p")
+		.attr("class", "fontawesome-user")
 		.attr("align", "center")
 		// .attr("transform", "translate(0, 0)")
 		.text("Money: "+money);
 
-	var svg1 = d3.select("body").selectAll("svg")
+	svg1 = d3.select("body").selectAll("svg")
 		.data("S")
 		.enter().append("svg")
 		.attr("width", width+50)
@@ -136,63 +152,29 @@ function Init(){
 		.attr("class", "RdYlGn")
 		.append("g")
 		.attr("transform", "translate(50, 0)")
-		
 
 	spins = svg1.selectAll(".spin")
 		.data(d3.range(0,100))
 		.enter().append("rect")
-		.on("mouseenter", function(d){showinfo(d, d3.mouse(this));})
+		.on("mouseenter", function(d){/*exaggerate(d);*/ showinfo(d, d3.mouse(this));})
 		.attr("class", "spin")
 		.attr("width", cellSize)
 		.attr("height", cellSize)
 		.attr("x", function(d){return d%10*cellSize;})
 		.attr("y", function(d){return Math.floor(d/10)*cellSize;});
-		
-	function showinfo(data, position){
-		svg1.append("text")
-			.attr("class", "body")
-			.attr("transform", "translate(" + position + ")")
-			.text(value[data])
-			.transition()
-			.duration(1500)
-			.style("opacity", 0)
-			.remove();
-		d3.event.preventDefault();
-	}
-	
+			
 	spins.filter(function(d) { return d+1; })
 		.attr("class", function(d) { return "spin q" + spin[d]; });
 	
-	var svg2 = d3.select("body")
+	svg2 = d3.select("body")
 		.append("svg")
 		.attr("width", width+150)
 		.attr("height", height)
 		.attr("class", "BW")
 		.append("g")
 		.attr("transform", "translate(150, 0)");
-		
-	function purchase(data){
-		if (position[data] < 9 && money>=value[data+1]){
-			money -= value[data+1];
-			position[data] += 1;
-			moneytext.text("Money: "+money);
-			posis.filter(function(d) { return d+1; })
-				.attr("class", function(d) { return "posi t" + position[d]; });
-		}	
-	}
-
-	function sell(data){
-		d3.event.preventDefault();
-		if (position[data] > 0){
-			money += value[data+1]
-			position[data] -= 1;
-			moneytext.text("Money: "+money);
-			posis.filter(function(d) { return d+1; })
-				.attr("class", function(d) { return "posi t" + position[d]; });
-		}
-	}
 	
-	var posis = svg2.selectAll(".posi")
+	posis = svg2.selectAll(".posi")
 		.data(d3.range(0,100))
 		.enter().append("rect")
 		.attr("class", "posi")
@@ -202,11 +184,50 @@ function Init(){
 		.attr("y", function(d){return Math.floor(d/10)*cellSize;})
 		.on("click", function(d){purchase(d);})
 		.on("contextmenu", function(d){sell(d);});
+	
 	posis.filter(function(d) { return d+1; })
 		.attr("class", function(d) { return "posi t" + position[d]; });
 	
 	d3.select(self.frameElement).style("height", "2910px");
 
+}
+
+// function exaggerate(data){
+// 	posis.selectAll(d)
+// 		.filter(); //TODO
+// }
+
+function showinfo(data, position){
+	svg1.append("text")
+		.attr("class", "body")
+		.attr("transform", "translate(" + position + ")")
+		.text(value[data])
+		.transition()
+		.duration(1500)
+		.style("opacity", 0)
+		.remove();
+	d3.event.preventDefault();
+}
+
+function purchase(data){
+	if (position[data] < 9 && money>=value[data+1]){
+		money -= value[data+1];
+		position[data] += 1;
+		moneytext.text("Money: "+money);
+		posis.filter(function(d) { return d+1; })
+			.attr("class", function(d) { return "posi t" + position[d]; });
+	}	
+}
+
+function sell(data){
+	d3.event.preventDefault();
+	if (position[data] > 0){
+		money += value[data+1]
+		position[data] -= 1;
+		moneytext.text("Money: "+money);
+		posis.filter(function(d) { return d+1; })
+			.attr("class", function(d) { return "posi t" + position[d]; });
+	}
 }
 
 
