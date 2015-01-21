@@ -78,7 +78,7 @@ function Init(){
 	svg1 = d3.select("body").selectAll("svg")
 		.data("S")
 		.enter().append("svg")
-		.attr("width", width+50)
+		.attr("width", width+150)
 		.attr("height", height+50)
 		.attr("class", "RdYlGn")
 		.append("g")
@@ -103,7 +103,7 @@ function Init(){
 		.attr("height", height+50)
 		.attr("class", "BW")
 		.append("g")
-		.attr("transform", "translate(150, 50)");
+		.attr("transform", "translate(50, 50)");
 	
 	posis = svg2.selectAll(".posi")
 		.data(d3.range(0,100))
