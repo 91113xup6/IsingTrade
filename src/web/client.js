@@ -43,8 +43,13 @@ function Init(){
 		.data(["connect", "disconnect"])
 		.enter()
 		.append("button")
-		.on("click", function(d){switch(d){ case "connect":console.log("connect");
-											case "disconnect":Connection.disconnect();
+		.on("click", function(d){switch(d){ case "connect":
+											console.log('connect button clicked.');
+											Connection.connect();
+											d3.event.preventDefault();
+											case "disconnect":
+											Connection.disconnect();
+											d3.event.preventDefault();
 										  };
 								})
 		.attr("id", function(d){return d;})
@@ -54,18 +59,19 @@ function Init(){
 		// 									   };
 		// 							 })
 		
-	var strategy_select = upPanel.append("select")
-		.attr("name", "strategy");
+	strategy_select = upPanel.append("select")
+		.attr("name", "strategy")
+		.on("change", change);
 	//	.attr("class", "stg");
 
 	
-	strategy_select.selectAll("option")
+	options = strategy_select.selectAll("option")
 		.data(["Select Strategy", "A", "B", "C"])
 		.enter()
 		.append("option")
 		.attr("value", function(){})
 		.text(function(d){return d;});
-	
+
 	// $('.stg').fancySelect();
 	var teamtext = d3.select("body")
 		.append("h1")
@@ -136,6 +142,19 @@ function Init(){
 // 		.filter(); //TODO
 // }
 
+function change(){
+	var selectIndex = strategy_select.property('selectedIndex'),
+		data = options[0][selectIndex].__data__;
+	switch(data){
+	case "A":
+		sta = true;
+	case "B":
+		stb = true; 
+	case "C":
+		stc = true;
+	}
+}
+
 function showinfo(data, position){
 	svg1.append("text")
 		.attr("class", "body")
@@ -171,95 +190,25 @@ function sell(data){
 
 
 function Change(data, rect){
+
 	spin = data.split("");
-	for (var i = 0; i < 100; i++)
+	for (var i = 0; i < 100; i++){
 		value[i] += eval(spin[i])*20-10;
+		if (sta){
+			if (position[i]>0 && spin[i] == '1'){
+				sell(i);
+			}
+			if (money>0 && spin[i] == '0'){
+				purchase(i);
+			}
+		}
+	}
+	posis.filter(function(d) { return d+1; })
+			.attr("class", function(d) { return "posi t" + position[d]; });
+
 	var svg = d3.select("body").selectAll("svg")
 	spins.filter(function(d) { return d+1; })
 		.attr("class", function(d) { return "spin q" + spin[d]; })
 
+
 }
-
-//$(function () {
-	// var $log = $('#log');
-	// var log = function (message) {
-	// 	if (console && console.log) {
-	// 		console.log(message);
-	// 	}
-	// 	$log.append($('<li></li>').text(message))
-	// }
-	var State = {
-		isConnected: false,
-		connected: function () {
-			this.isConnected = true;
-			d3.selectAll("#connect").attr("disabled", true);
-			d3.selectAll("#disconnect").attr("disabled", false);
-			// $('#connect').attr('disabled', true);
-			// $('#disconnect').attr('disabled', false);
-			// $('#send').attr('disabled', false);
-			// $('#status').html("Connected");
-			
-		},
-		
-		disconnected: function () {
-			this.isConnected = false;
-			d3.selectAll("#connect").attr("disabled", false);
-			d3.selectAll("#disconnect").attr("disabled", true);
-			// $('#connect').attr('disabled', false);
-			// $('#disconnect').attr('disabled', true);
-			// $('#send').attr('disabled', true);
-			// $('#status').html("Disconnected");
-		}
-	};
-
-	var Connection = {
-		socket: null,
-		connect: function () {
-			var socket = this.socket = new SockJS(location.protocol + '//' + location.host + '/');
-			socket.onopen = function () {
-				// log('Connection opened');
-				// log('Sending: echo');
-				socket.send("echo");
-				State.connected();
-			};
-			socket.onmessage = function (e) {
-				// log('Recieved: ' + e.data);
-				// log(e.data);
-				Change (e.data);
-			}
-			socket.onclose = function () {
-				// log('Connection closed');
-				State.disconnected();
-			}
-		},
-		disconnect: function () {
-			if (this.socket) {
-				this.socket.close()
-				this.socket = null;
-			}
-		},
-		send: function (message) {
-            // log("Sending: " + message)
-            this.socket.send(message);
-        }
-	};
-		var $message = $('#message');
-	// $('#send-form').submit(function (e) {
-    //     Connection.send($message.val());
-    //     e.preventDefault();
-    // });
-
-    // $('#connect').click(function (e) {
-    //     Connection.connect();
-    //     e.preventDefault();
-    // });
-
-    // $('#disconnect').click(function (e) {
-    //     Connection.disconnect();
-    //     e.preventDefault();
-    // });
-
-	// $('#sta').click(function(e){
-	// 	Strategy('a');
-	// });
-//	});

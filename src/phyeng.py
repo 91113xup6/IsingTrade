@@ -26,10 +26,10 @@ T = 10
 B = 0
 
 
-def slice_(A, L):
+def slice_(A):
     return np.sum(A.reshape(10, L/10, -1, L/10)
                   .swapaxes(1, 2)
-                  .reshape(-1, L/10, L/10), (1, 2)).reshape(10, 10) // (L**2/200)
+                  .reshape(-1, L/10, L/10), (1, 2)).reshape(10, 10) // (L**2/199.)
 
 
 # @jit
@@ -48,8 +48,7 @@ def iter_(mat, T, B):
 
 # @jit
 def energy(mat, B):
-    mat = mat * 2 - 1
-    return np.sum(mat)*B + np.sum(np.abs(np.diff(mat))) + np.sum(np.abs(np.diff(mat.T)))
+    return np.sum(mat*2-1)*B + np.sum(np.abs(np.diff(mat*2-1))) + np.sum(np.abs(np.diff((mat*2-1).T)))
 
 
 class lattice():
@@ -68,9 +67,12 @@ class lattice():
 def phys_loop():
     try:
         while True:
-            sleep(0.001)
+            sleep(.001)
             A.updateValue()
             A.updateSpin()
+            # print(A.spin)
+            # print(''.join(map(lambda x: str(int(x)),
+            #                                              slice_(A.spin).flatten())))
     except KeyboardInterrupt:
         raise SystemExit
 
@@ -103,12 +105,14 @@ def main():
     out_socket = context.socket(zmq.PUSH)
     out_socket.connect("tcp://127.0.0.1:9242")
     (message_type, session_id, data) = in_socket.recv_multipart()
+    # print("received.")
     try:
         while True:
             sleep(1)
-            out_socket.send_multipart(['message', session_id,
-                                       ''.join(map(lambda x: str(int(x)),
-                                                   slice_(A.spin).flatten()))])
+            out_socket.send_multipart(['message'.encode('utf-8'), session_id,
+                                       bytes(''.join(map(lambda x: str(int(x)),
+                                                         slice_(A.spin).flatten())), 'utf-8')
+                                   ])
     except KeyboardInterrupt:
         pass
     in_socket.close()
