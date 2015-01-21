@@ -78,17 +78,29 @@ def phys_loop():
 
 
 def command_loop():
+    command_channel = context.socket(zmq.PULL)
+    command_channel.bind("tcp://127.0.0.1:5558")
+    global T
+    global B
     try:
         while True:
-            sleep(1)
-            # non blocking recv
+            sleep(.01)
+            order = command_channel.recv_string()
+            if order[0] == 'T':
+                T = eval(order[0:])
+            elif order[0] == 'B':
+                B = eval(order[0:])    
     except KeyboardInterrupt:
         pass
 
 
 def in_loop():
+    in_socket = context.socket(zmq.PULL)
+    in_socket.connect("tcp://127.0.0.1:9241")
+
     global session_id
     global sent
+    global A
     try:
         while True:
             sleep(.01)
@@ -98,8 +110,10 @@ def in_loop():
                 sent = True
             if message_type == b'disconnect':#.encode('utf-8'):
                 sent = False
+                A = lattice()
     except KeyboardInterrupt:
         pass
+
 
 def main():
     global sent
@@ -112,14 +126,10 @@ def main():
     t_phys = threading.Thread(target=phys_loop)
     # t_phys = Process(target=phys_loop)
     t_phys.start()
+    global context
     context = zmq.Context()
-    # command_channel = context.socket(zmq.PULL)
-    # command_channel.bind("tcp://127.0.0.1:5558")
-    # t_command = threading.Thread(target=command_loop)
-    # t_command.start()
-    global in_socket
-    in_socket = context.socket(zmq.PULL)
-    in_socket.connect("tcp://127.0.0.1:9241")
+    t_command = threading.Thread(target=command_loop)
+    t_command.start()
     t_in = threading.Thread(target=in_loop)
     t_in.start()
 
@@ -141,8 +151,8 @@ def main():
                                    ])
     except KeyboardInterrupt:
         pass
-    in_socket.close()
-    out_socket.close()
+    # in_socket.close()
+    # out_socket.close()
     context.destroy()
 
 if __name__ == '__main__':
