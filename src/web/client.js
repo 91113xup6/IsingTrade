@@ -35,33 +35,38 @@ function Init(){
 	
 	var width = 500,
 		height = 500,
-		cellSize = 50; // cell size
+		cellSize = 50;
 	var upPanel = d3.select("body").append("div")
-		.style("height", 25+"px");
+	 	.style("height", 40+"px");
 
 	upPanel.selectAll("button")
 		.data(["connect", "disconnect"])
 		.enter()
 		.append("button")
-		.on("click", function(d){switch(d){ case "connect":Connection.connect();
+		.on("click", function(d){switch(d){ case "connect":console.log("connect");
 											case "disconnect":Connection.disconnect();
-										  };})
+										  };
+								})
 		.attr("id", function(d){return d;})
-		.attr("disabled", function(d){switch(d){case "connect": return "false";
-												case "disconnect": return "true";
-											   };})
 		.text(function(d){return d;});
+	// .attr("disabled", function(d){switch(d){case "connect": return "false";
+		// 										case "disconnect": return "true";
+		// 									   };
+		// 							 })
+		
 	var strategy_select = upPanel.append("select")
-		.attr("name", "strategy")
-		.text("STRATEGY")
+		.attr("name", "strategy");
+	//	.attr("class", "stg");
+
+	
 	strategy_select.selectAll("option")
 		.data(["Select Strategy", "A", "B", "C"])
 		.enter()
 		.append("option")
 		.attr("value", function(){})
-
-		.text(function(d){return d;})
-
+		.text(function(d){return d;});
+	
+	// $('.stg').fancySelect();
 	var teamtext = d3.select("body")
 		.append("h1")
 		.attr("class", "fontawesome-user")
@@ -82,12 +87,15 @@ function Init(){
 		.attr("height", height+50)
 		.attr("class", "RdYlGn")
 		.append("g")
-		.attr("transform", "translate(50, 50)")
+		.attr("transform", "translate(50, 50)");
 
 	spins = svg1.selectAll(".spin")
 		.data(d3.range(0,100))
 		.enter().append("rect")
-		.on("mouseenter", function(d){/*exaggerate(d);*/ showinfo(d, d3.mouse(this));})
+		.on("mouseenter", function(d){/*exaggerate(d);*/
+			// showinfo(d, d3.mouse(this));
+			showinfo(d, [d%10*(cellSize), Math.floor(d/10)*(cellSize)+30] );
+		})
 		.attr("class", "spin")
 		.attr("width", cellSize)
 		.attr("height", cellSize)
@@ -135,7 +143,7 @@ function showinfo(data, position){
 		.text(value[data])
 		.transition()
 		.duration(1500)
-		.style("opacity", 0)
+		.style("font-size", "xx-large")
 		.remove();
 	d3.event.preventDefault();
 }
@@ -235,7 +243,7 @@ function Change(data, rect){
             this.socket.send(message);
         }
 	};
-		// var $message = $('#message');
+		var $message = $('#message');
 	// $('#send-form').submit(function (e) {
     //     Connection.send($message.val());
     //     e.preventDefault();
