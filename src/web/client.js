@@ -21,7 +21,7 @@ function Init(){
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 					0, 0, 0, 0, 0, 0, 0, 0];
-	
+	oldvalue = [];
 	value = [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
@@ -76,7 +76,7 @@ function Init(){
 
 	var groupsell = upPanel.append("button")
 		.on("click", sell_all)
-		.text("all out");
+		.text("ZERO");
 	
 	// $('.stg').fancySelect();
 	var teamtext = d3.select("body")
@@ -101,6 +101,7 @@ function Init(){
 		.append("g")
 		.attr("transform", "translate(50, 50)");
 
+	div = d3.select("body").append("div").attr("class","tooltip");
 	spins = svg1.selectAll(".spin")
 		.data(d3.range(0,100))
 		.enter().append("rect")
@@ -185,15 +186,44 @@ function change(){
 }
 
 function showinfo(data, position){
-	svg1.append("text")
-		.attr("class", "body")
-		.attr("transform", "translate(" + position + ")")
-		.text(value[data])
-		.attr("pointer-events", "none")
-		.transition()
-		.duration(500)
-		.style("font-size", "x-large")
-		.remove()
+	div.transition()        
+        .duration(200)      
+        .style("opacity", .9)
+        .style("left", d3.event.pageX + "px")     
+        .style("top", d3.event.pageY + "px")
+		.text(value[data]);
+	// var lineData = [500, 100, 370, 400, 240, 310, 90, 490, 80, 260]
+	// for (i=0;i<oldvalue.length;i++)
+	// 	lineData.push(oldvalue[i][data]);
+	
+	// var lineFunction = d3.svg.line()
+    //     .x(function(d, i) { return  70 * i; })
+    //     .y(function(d) { return d; })
+    //     .interpolate("linear");
+
+	// var box = div.insert("svg");
+	// 	.attr("width", "300")
+	// 	.attr("height", "100");
+	//	.style("fill", "#FFFFFF");
+		// .attr("transform", "translate(" + position + ")");
+	
+	// box.insert("path")
+	// 	   .attr("transform", "translate(" + position + ")")
+    //     .attr("d", lineFunction(lineData))
+    //     .attr("stroke", "red")
+    //     .attr("stroke-width", 2)
+    //     .attr("fill", "none");
+	//	   .style("fill", "#FFFFFF")
+
+	// svg1.append("text")
+	// 	.attr("class", "body")
+	// 	.attr("transform", "translate(" + position + ")")
+	// 	.text(value[data])
+	// 	.attr("pointer-events", "none")
+	// 	.transition()
+	// 	.duration(500)
+	// 	.style("font-size", "x-large")
+	// 	.remove();
 }
 
 function purchase(data){
@@ -221,11 +251,15 @@ function sell(data){
 function Change(data_s, data_v){
 	spin = data_s.split("");
 	value = data_v.split(",");
+	oldvalue.push(value);
+	if(oldvalue.length>10){
+		oldvalue.shift();
+	}
 	for (var i = 0; i < 100; i++){
 		value[i] = eval(value[i]);
 		//value[i] += eval(spin[i])*20-10;
-		if(value[i]<0)
-			value[i]=0;
+		if(value[i]<1)
+			value[i]=1;
 		if (sta){
 			if (spin[i] == '1'){
 				sell(i);
