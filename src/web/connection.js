@@ -45,7 +45,8 @@ $(function () {
 			socket.onmessage = function (e) {
 				console.log('Recieved: ' + e.data);
 				// log(e.data);
-				Change (e.data);
+				// Change(e.data);
+				Change(e.data.substring(0, 100), e.data.substring(100) );
 			}
 			socket.onclose = function () {
 				console.log('Connection closed');

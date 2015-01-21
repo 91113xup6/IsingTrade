@@ -58,7 +58,7 @@ class lattice():
         self.value.fill(200)
 
     def updateValue(self):
-        self.value += (self.spin * 2 - 1) * 10
+        self.value += (self.spin * 2 - 1) * .1
 
     def updateSpin(self):
         self.spin = iter_(self.spin, T, B)
@@ -134,7 +134,10 @@ def main():
             if sent:
                 out_socket.send_multipart(['message'.encode('utf-8'), session_id,
                                            bytes(''.join(map(lambda x: str(int(x)),
-                                                             slice_(A.spin).flatten())), 'utf-8')
+                                                             slice_(A.spin).flatten()))
+                                                 +','.join(map(lambda x: str(int(x)),
+                                                             slice_(A.value).flatten()))
+                                                 , 'utf-8')
                                    ])
     except KeyboardInterrupt:
         pass

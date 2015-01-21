@@ -31,7 +31,7 @@ function Init(){
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
 			 200, 200, 200, 200, 200, 200, 200, 200, 200];
 	
-	money = 100000;
+	money = 1.0e5;
 	
 	var width = 500,
 		height = 500,
@@ -184,14 +184,14 @@ function showinfo(data, position){
 		.text(value[data])
 		.attr("pointer-events", "none")
 		.transition()
-		.duration(1500)
+		.duration(500)
 		.style("font-size", "xx-large")
 		.remove()
 }
 
 function purchase(data){
-	if (position[data] < 9 && money>=value[data+1]){
-		money -= value[data+1];
+	if (position[data] < 9 && money>=value[data]){
+		money -= value[data];
 		position[data] += 1;
 		moneytext.text("Money: "+money);
 		posis.filter(function(d) { return d+1; })
@@ -202,7 +202,7 @@ function purchase(data){
 function sell(data){
 
 	if (position[data] > 0){
-		money += value[data+1]
+		money += value[data]
 		position[data] -= 1;
 		moneytext.text("Money: "+money);
 		posis.filter(function(d) { return d+1; })
@@ -211,30 +211,28 @@ function sell(data){
 }
 
 
-function Change(data, rect){
-
-	spin = data.split("");
+function Change(data_s, data_v){
+	spin = data_s.split("");
+	value = data_v.split(",");
 	for (var i = 0; i < 100; i++){
-		value[i] += eval(spin[i])*20-10;
+		value[i] = eval(value[i]);
+		//value[i] += eval(spin[i])*20-10;
 		if(value[i]<0)
 			value[i]=0;
 		if (sta){
-			if (position[i]>0 && spin[i] == '1'){
+			if (spin[i] == '1'){
 				sell(i);
 			}
 			if (spin[i] == '0'){
-				if(money>value[i])
-					purchase(i);
+				purchase(i);
 			}
 		}
 		if (stb){
 			if (spin[i]=='1'){
-				if(money>value[i])
-					purchase(i);
+				purchase(i);
 			}
 			if (spin[i]=='0'){
-				if(position[i] > 0)
-					sell(i);
+				sell(i);
 			}
 		}
 	}
