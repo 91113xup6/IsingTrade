@@ -247,7 +247,7 @@ function sell(data){
 		position[data] -= 1;
 		moneytext.text("Money: "+money);
 		if (money>5000){
-			moneytext.style("color","none");
+			moneytext.style("color","#606468");
 		}
 		posis.filter(function(d) { return d+1; })
 			.attr("class", function(d) { return "posi t" + position[d]; });
