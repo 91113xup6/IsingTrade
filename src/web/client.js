@@ -108,12 +108,14 @@ function Init(){
 			// showinfo(d, d3.mouse(this));
 			showinfo(d, [d%10*(cellSize), Math.floor(d/10)*(cellSize)+30] );
 		})
+		.on("click", function(d){purchase(d);})
+		.on("contextmenu", function(d){sell(d);	d3.event.preventDefault();})
 		.attr("class", "spin")
 		.attr("width", cellSize)
 		.attr("height", cellSize)
 		.attr("x", function(d){return d%10*cellSize;})
 		.attr("y", function(d){return Math.floor(d/10)*cellSize;});
-			
+	
 	spins.filter(function(d) { return d+1; })
 		.attr("class", function(d) { return "spin q" + spin[d]; });
 	
@@ -180,11 +182,11 @@ function showinfo(data, position){
 		.attr("class", "body")
 		.attr("transform", "translate(" + position + ")")
 		.text(value[data])
+		.attr("pointer-events", "none")
 		.transition()
 		.duration(1500)
 		.style("font-size", "xx-large")
-		.remove();
-	d3.event.preventDefault();
+		.remove()
 }
 
 function purchase(data){
@@ -214,6 +216,8 @@ function Change(data, rect){
 	spin = data.split("");
 	for (var i = 0; i < 100; i++){
 		value[i] += eval(spin[i])*20-10;
+		if(value[i]<0)
+			value[i]=0;
 		if (sta){
 			if (position[i]>0 && spin[i] == '1'){
 				sell(i);
