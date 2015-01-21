@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<svg width="720" height="500">
+</svg>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+//The data for our line
+ var lineData = [500, 100, 370, 400, 240, 310, 90, 490, 80, 260];
+ 
+ //This is the accessor function we talked about above
+ var lineFunction = d3.svg.line()
+                          .x(function(d, i) { return 70 * i; })
+                          .y(function(d) { return d; })
+                          .interpolate("linear");
+
+//The line SVG Path we draw
+var lineGraph = d3.select("svg").append("path")
+                            .attr("d", lineFunction(lineData))
+                            .attr("stroke", "blue")
+                            .attr("stroke-width", 2)
+                            .attr("fill", "none");
+function Change(){
+	lineData.shift();
+	lineData.push(Math.floor((Math.random() * 500) + 1));
+	lineGraph.attr("d", lineFunction(lineData));
+}
+setInterval(Change, 1000);
+//shift
+//push
+//Math.floor((Math.random() * 500) + 1);
+</script>
