@@ -106,7 +106,7 @@ function Init(){
 		.enter().append("rect")
 		.on("mouseenter", function(d){/*exaggerate(d);*/
 			// showinfo(d, d3.mouse(this));
-			showinfo(d, [d%10*(cellSize), Math.floor(d/10)*(cellSize)+30] );
+			showinfo(d, [d%10*(cellSize)+5, Math.floor(d/10)*(cellSize)+30] );
 		})
 		.on("click", function(d){purchase(d);})
 		.on("contextmenu", function(d){sell(d);	d3.event.preventDefault();})
@@ -137,7 +137,14 @@ function Init(){
 		.attr("y", function(d){return Math.floor(d/10)*cellSize;})
 		.on("click", function(d){purchase(d);})
 		.on("contextmenu", function(d){sell(d);	d3.event.preventDefault();});
-	
+		// .on("mouseenter", function(d){svg2
+		// 							  .append("line")
+		// 							  .attr("stroke-width", "5")
+		// 							  .attr("x1", d%10*cellSize.toString())
+		// 							  .attr("y1", Math.floor(d/10)*cellSize.toString())
+		// 							  .attr("x2", (d%10*cellSize+500).toString())
+		// 							  .attr("y2", (Math.floor(d/10)*cellSize+500).toString());
+		// 							 });
 	posis.filter(function(d) { return d+1; })
 		.attr("class", function(d) { return "posi t" + position[d]; });
 	
@@ -185,7 +192,7 @@ function showinfo(data, position){
 		.attr("pointer-events", "none")
 		.transition()
 		.duration(500)
-		.style("font-size", "xx-large")
+		.style("font-size", "x-large")
 		.remove()
 }
 

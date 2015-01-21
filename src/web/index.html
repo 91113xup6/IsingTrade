@@ -3,13 +3,15 @@
 <style>
   body {
   font: Georgia, "Cambria", 18px serif;
-  background-color: #999999;
+<!--  background-color: #999999; -->
   shape-rendering: crispEdges;
   }
 
   .spin {
   fill: #fff;
+
   stroke: #ccc;
+  stroke-width: .5px;
   }
   
   .posi{
@@ -23,19 +25,22 @@
   stroke-width: 2px;
   }
 
+.BW{
+fill:rgb(255,255,255);
 
-.RdYlGn .q1{fill:rgb(165,0,38)}
-.RdYlGn .q0{fill:rgb(0,104,55)}
-.BW .t0{fill:rgb(255,255,255)}
-.BW .t1{fill:rgb(230,230,230)}
-.BW .t2{fill:rgb(205,205,205)}
-.BW .t3{fill:rgb(180,180,180)}
-.BW .t4{fill:rgb(155,155,155)}
-.BW .t5{fill:rgb(130,130,130)}
-.BW .t6{fill:rgb(105,105,105)}
-.BW .t7{fill:rgb(80,80,80)}
-.BW .t8{fill:rgb(55,55,55)}
-.BW .t9{fill:rgb(0,0,0)}
+}
+.RdYlGn .q1{fill:rgb(165,0,38);transition: fill .2s;}
+.RdYlGn .q0{fill:rgb(0,104,55);transition: fill .2s;}
+.BW .t0{fill:rgb(255,255,255);transition: fill 1s;}
+.BW .t1{fill:rgb(230,230,230);transition: fill 1s;}
+.BW .t2{fill:rgb(205,205,205);transition: fill 1s;}
+.BW .t3{fill:rgb(180,180,180);transition: fill 1s;}
+.BW .t4{fill:rgb(155,155,155);transition: fill 1s;}
+.BW .t5{fill:rgb(130,130,130);transition: fill 1s;}
+.BW .t6{fill:rgb(105,105,105);transition: fill 1s;}
+.BW .t7{fill:rgb(80,80,80);transition: fill 1s;}
+.BW .t8{fill:rgb(55,55,55);transition: fill 1s;}
+.BW .t9{fill:rgb(0,0,0);transition: fill 1s;}
 </style>
 <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="sockjs-0.3.js"></script>
