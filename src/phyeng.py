@@ -20,7 +20,7 @@ from time import sleep
 from scipy.stats import rv_discrete
 # import matplotlib.pyplot as plt
 
-# from numba import jit
+from numba import jit
 L = 20
 T = 10
 B = 0
@@ -32,7 +32,7 @@ def slice_(A):
                   .reshape(-1, L/10, L/10), (1, 2)).reshape(10, 10) // (L**2/199.)
 
 
-# @jit
+@jit
 def iter_(mat, T, B):
     L = mat.shape[0]
     sample = np.random.random((100, L, L))
@@ -46,7 +46,7 @@ def iter_(mat, T, B):
     return sample_change[dist.rvs()]
 
 
-# @jit
+@jit
 def energy(mat, B):
     return np.sum(mat*2-1)*B + np.sum(np.abs(np.diff(mat*2-1))) + np.sum(np.abs(np.diff((mat*2-1).T)))
 
