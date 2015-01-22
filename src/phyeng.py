@@ -105,7 +105,7 @@ def in_loop():
         while True:
             sleep(.01)
             (message_type, session_id, data) = in_socket.recv_multipart()
-            print("msg: "+message_type)
+            # print("msg: "+message_type)
             if message_type == b'connect':#.encode('utf-8'):
                 sent = True
                 A = lattice()
