@@ -120,6 +120,7 @@ def din_loop():
     din_socket = context.socket(zmq.PULL)
     din_socket.connect("tcp://127.0.0.1:9240")
     global dsent
+    global dsession_id
     try:
         while True:
             sleep(.01)
