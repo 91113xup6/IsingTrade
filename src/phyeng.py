@@ -125,7 +125,7 @@ def din_loop():
         while True:
             sleep(.01)
             (dmessage_type, dsession_id, ddata) = din_socket.recv_multipart()
-            print("dmsg: "+dmessage_type)
+            # print("dmsg: "+dmessage_type)
             if dmessage_type == b'connect':#.encode('utf-8'):
                 dsent = True
             if dmessage_type == b'disconnect':#.encode('utf-8'):
