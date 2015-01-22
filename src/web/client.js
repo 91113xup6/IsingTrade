@@ -84,7 +84,11 @@ function Init(){
 		.attr("class", "fontawesome-user")
 		.attr("align", "center")
 		.text($_GET["team"]);
-
+	var clearText = d3.select("body")
+		.append("h1")
+		.attr("align", "center")
+		.text("Total: "+money);
+		
 	
 	moneytext = d3.select("body")
 		.append("h1")
@@ -191,7 +195,8 @@ function showinfo(data, position){
         .style("opacity", .9)
         .style("left", d3.event.pageX + "px")     
         .style("top", d3.event.pageY + "px")
-		.text(value[data]);
+		.text(value[data])
+		.attr("pointer-events", "none");
 	// var lineData = [500, 100, 370, 400, 240, 310, 90, 490, 80, 260]
 	// for (i=0;i<oldvalue.length;i++)
 	// 	lineData.push(oldvalue[i][data]);
@@ -237,7 +242,8 @@ function purchase(data){
 
 		posis.filter(function(d) { return d+1; })
 			.attr("class", function(d) { return "posi t" + position[d]; });
-	}	
+	}
+	
 }
 
 function sell(data){
@@ -252,9 +258,14 @@ function sell(data){
 		posis.filter(function(d) { return d+1; })
 			.attr("class", function(d) { return "posi t" + position[d]; });
 	}
+	
 }
 
-
+function dotproduct(a,b) {
+	var n = 0, lim = Math.min(a.length,b.length);
+	for (var i = 0; i < lim; i++) n += eval(a[i]) * eval(b[i]);
+	return n;
+ }
 function Change(data_s, data_v){
 	spin = data_s.split("");
 	value = data_v.split(",");
@@ -284,6 +295,7 @@ function Change(data_s, data_v){
 			}
 		}
 	}
+	clearText.text("Total: "+ (dotproduct(value, position) + money));
 	posis.filter(function(d) { return d+1; })
 			.attr("class", function(d) { return "posi t" + position[d]; });
 
