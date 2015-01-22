@@ -84,7 +84,7 @@ function Init(){
 		.attr("class", "fontawesome-user")
 		.attr("align", "center")
 		.text($_GET["team"]);
-	var clearText = d3.select("body")
+	clearText = d3.select("body")
 		.append("h1")
 		.attr("align", "center")
 		.text("Total: "+money);
