@@ -39,7 +39,7 @@ $(function () {
 			socket.onopen = function () {
 				console.log('Connection opened');
 				console.log('Sending: echo');
-				socket.send("display");
+				socket.send("echo");
 				State.connected();
 			};
 			socket.onmessage = function (e) {

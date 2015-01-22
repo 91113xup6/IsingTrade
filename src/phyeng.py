@@ -105,7 +105,7 @@ def in_loop():
         while True:
             sleep(.01)
             (message_type, session_id, data) = in_socket.recv_multipart()
-            print(message_type)
+            print("msg: "+message_type)
             if message_type == b'connect':#.encode('utf-8'):
                 sent = True
                 A = lattice()
@@ -115,17 +115,16 @@ def in_loop():
     except KeyboardInterrupt:
         pass
 
-    
+
 def din_loop():
     din_socket = context.socket(zmq.PULL)
     din_socket.connect("tcp://127.0.0.1:9240")
-    global dsession_id
     global dsent
     try:
         while True:
             sleep(.01)
             (dmessage_type, dsession_id, ddata) = din_socket.recv_multipart()
-            print(dmessage_type)
+            print("dmsg: "+dmessage_type)
             if dmessage_type == b'connect':#.encode('utf-8'):
                 dsent = True
             if dmessage_type == b'disconnect':#.encode('utf-8'):
