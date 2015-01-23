@@ -92,7 +92,7 @@ function Init(){
 	spins = svg1.selectAll(".spin")
 		.data(d3.range(0,100))
 		.enter().append("rect")
-		.on("mouseenter", function(d){/*exaggerate(d);*/
+		.on("mouseenter", function(d){//exaggerate(d);
 			// showinfo(d, d3.mouse(this));
 			showinfo(d, [d%10*(cellSize), Math.floor(d/10)*(cellSize)+30] );
 		})
