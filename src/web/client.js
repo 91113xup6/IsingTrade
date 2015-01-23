@@ -141,7 +141,8 @@ function Init(){
 		.attr("x", function(d){return d%10*cellSize;})
 		.attr("y", function(d){return Math.floor(d/10)*cellSize;})
 		.on("click", function(d){purchase(d);})
-		.on("contextmenu", function(d){sell(d);	d3.event.preventDefault();});
+		.on("contextmenu", function(d){sell(d);	d3.event.preventDefault();})
+		.on("mousewheel", function(d){Wheel(d);});
 		// .on("mouseenter", function(d){svg2
 		// 							  .append("line")
 		// 							  .attr("stroke-width", "5")
@@ -156,7 +157,11 @@ function Init(){
 	d3.select(self.frameElement).style("height", "2910px");
 
 }
-
+function Wheel(d){
+	var delta = window.event.wheelDelta;
+	if(delta > 0)purchase(d);
+	else{sell(d);	d3.event.preventDefault();}
+}
 
 function sell_all(){
 	for(i=0;i<100;i++){
