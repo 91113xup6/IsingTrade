@@ -31,7 +31,7 @@ function Init(){
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
 			 200, 200, 200, 200, 200, 200, 200, 200, 200];
 	
-	money = 1.0e5;
+	// money = 1.0e5;
 	
 	var width = 500,
 		height = 500,
@@ -61,45 +61,41 @@ function Init(){
 		// 									   };
 		// 							 })
 		
-	strategy_select = upPanel.append("select")
-		.attr("name", "strategy")
-		.on("change", change);
+	// strategy_select = upPanel.append("select")
+	// 	.attr("name", "strategy")
+	// 	.on("change", change);
 	//	.attr("class", "stg");
 
 	
-	options = strategy_select.selectAll("option")
-		.data(["Select Strategy", "A", "B", "No"])
-		.enter()
-		.append("option")
-		.attr("value", function(){})
-		.text(function(d){return d;});
+	// options = strategy_select.selectAll("option")
+	// 	.data(["Select Strategy", "A", "B", "No"])
+	// 	.enter()
+	// 	.append("option")
+	// 	.attr("value", function(){})
+	// 	.text(function(d){return d;});
 
-	var groupsell = upPanel.append("button")
-		.on("click", sell_all)
-		.text("ZERO");
+	// var groupsell = upPanel.append("button")
+	// 	.on("click", sell_all)
+	// 	.text("ZERO");
 	
 	// $('.stg').fancySelect();
-	var teamtext = d3.select("body")
-		.append("h1")
-		.attr("class", "fontawesome-user")
-		.attr("align", "center")
-		.text($_GET["team"]);
-	clearText = d3.select("body")
-		.append("h1")
-		.attr("align", "center")
-		.text("Total: "+money);
-		
+	// var teamtext = d3.select("body")
+	// 	.append("h1")
+	// 	.attr("class", "fontawesome-user")
+	// 	.attr("align", "center")
+	// 	.text($_GET["team"]);
+
 	
-	moneytext = d3.select("body")
-		.append("h1")
-		.attr("align", "center")
-		// .attr("transform", "translate(0, 0)")
-		.text("Money: "+money);
+	// moneytext = d3.select("body")
+	// 	.append("h1")
+	// 	.attr("align", "center")
+	// 	// .attr("transform", "translate(0, 0)")
+	// 	.text("Money: "+money);
 
 	svg1 = d3.select("body").selectAll("svg")
 		.data("S")
 		.enter().append("svg")
-		.attr("width", width+150)
+		.attr("width", width+50)
 		.attr("height", height+50)
 		.attr("class", "RdYlGn")
 		.append("g")
@@ -109,12 +105,12 @@ function Init(){
 	spins = svg1.selectAll(".spin")
 		.data(d3.range(0,100))
 		.enter().append("rect")
-		.on("mouseenter", function(d){//exaggerate(d);
+		.on("mouseenter", function(d){/*exaggerate(d);*/
 			// showinfo(d, d3.mouse(this));
 			showinfo(d, [d%10*(cellSize)+5, Math.floor(d/10)*(cellSize)+30] );
 		})
-		.on("click", function(d){purchase(d);})
-		.on("contextmenu", function(d){sell(d);	d3.event.preventDefault();})
+		// .on("click", function(d){purchase(d);})
+		// .on("contextmenu", function(d){sell(d);	d3.event.preventDefault();})
 		.attr("class", "spin")
 		.attr("width", cellSize)
 		.attr("height", cellSize)
@@ -130,7 +126,7 @@ function Init(){
 		.attr("height", height+50)
 		.attr("class", "BW")
 		.append("g")
-		.attr("transform", "translate(50, 50)");
+		.attr("transform", "translate(150, 50)");
 	
 	posis = svg2.selectAll(".posi")
 		.data(d3.range(0,100))
@@ -140,8 +136,8 @@ function Init(){
 		.attr("height", cellSize)
 		.attr("x", function(d){return d%10*cellSize;})
 		.attr("y", function(d){return Math.floor(d/10)*cellSize;})
-		.on("click", function(d){purchase(d);})
-		.on("contextmenu", function(d){sell(d);	d3.event.preventDefault();});
+		// .on("click", function(d){purchase(d);})
+		// .on("contextmenu", function(d){sell(d);	d3.event.preventDefault();});
 		// .on("mouseenter", function(d){svg2
 		// 							  .append("line")
 		// 							  .attr("stroke-width", "5")
@@ -158,36 +154,36 @@ function Init(){
 }
 
 
-function sell_all(){
-	for(i=0;i<100;i++){
-		while(position[i]>0)
-			sell(i);
-	}
-}
+// function sell_all(){
+// 	for(i=0;i<100;i++){
+// 		while(position[i]>0)
+// 			sell(i);
+// 	}
+// }
 // function exaggerate(data){
 // 	posis.selectAll(d)
 // 		.filter(); //TODO
 // }
 
-function change(){
-	var selectIndex = strategy_select.property('selectedIndex'),
-		data = options[0][selectIndex].__data__;
-	console.log("you selected "+data);
-	switch(data){
-	case "A":
-		sta = true;
-		stb = false;
-		break;
-	case "B":
-		sta = false;
-		stb = true;
-		break;
-	case "No":
-	 	sta = false;
-	 	stb = false;
-		break;
-	}
-}
+// function change(){
+// 	var selectIndex = strategy_select.property('selectedIndex'),
+// 		data = options[0][selectIndex].__data__;
+// 	console.log("you selected "+data);
+// 	switch(data){
+// 	case "A":
+// 		sta = true;
+// 		stb = false;
+// 		break;
+// 	case "B":
+// 		sta = false;
+// 		stb = true;
+// 		break;
+// 	case "No":
+// 	 	sta = false;
+// 	 	stb = false;
+// 		break;
+// 	}
+// }
 
 function showinfo(data, position){
 	div.transition()        
@@ -195,8 +191,7 @@ function showinfo(data, position){
         .style("opacity", .9)
         .style("left", d3.event.pageX + "px")     
         .style("top", d3.event.pageY + "px")
-		.text(value[data])
-		.attr("pointer-events", "none");
+		.text(value[data]);
 	// var lineData = [500, 100, 370, 400, 240, 310, 90, 490, 80, 260]
 	// for (i=0;i<oldvalue.length;i++)
 	// 	lineData.push(oldvalue[i][data]);
@@ -231,41 +226,35 @@ function showinfo(data, position){
 	// 	.remove();
 }
 
-function purchase(data){
-	if (position[data] < 9 && money>=value[data]){
-		money -= value[data];
-		position[data] += 1;
-		moneytext.text("Money: "+money);
-		if (money<5000){
-			moneytext.transition().style("color","red");
-		}
+// function purchase(data){
+// 	if (position[data] < 9 && money>=value[data]){
+// 		money -= value[data];
+// 		position[data] += 1;
+// 		moneytext.text("Money: "+money);
+// 		if (money<5000){
+// 			moneytext.transition().style("color","red");
+// 		}
 
-		posis.filter(function(d) { return d+1; })
-			.attr("class", function(d) { return "posi t" + position[d]; });
-	}
-	
-}
+// 		posis.filter(function(d) { return d+1; })
+// 			.attr("class", function(d) { return "posi t" + position[d]; });
+// 	}	
+// }
 
-function sell(data){
+// function sell(data){
 
-	if (position[data] > 0){
-		money += value[data]
-		position[data] -= 1;
-		moneytext.text("Money: "+money);
-		if (money>5000){
-			moneytext.transition().style("color","#606468");
-		}
-		posis.filter(function(d) { return d+1; })
-			.attr("class", function(d) { return "posi t" + position[d]; });
-	}
-	
-}
+// 	if (position[data] > 0){
+// 		money += value[data]
+// 		position[data] -= 1;
+// 		moneytext.text("Money: "+money);
+// 		if (money>5000){
+// 			moneytext.transition().style("color","#606468");
+// 		}
+// 		posis.filter(function(d) { return d+1; })
+// 			.attr("class", function(d) { return "posi t" + position[d]; });
+// 	}
+// }
 
-function dotproduct(a,b) {
-	var n = 0, lim = Math.min(a.length,b.length);
-	for (var i = 0; i < lim; i++) n += eval(a[i]) * eval(b[i]);
-	return n;
- }
+
 function Change(data_s, data_v){
 	spin = data_s.split("");
 	value = data_v.split(",");
@@ -278,24 +267,23 @@ function Change(data_s, data_v){
 		//value[i] += eval(spin[i])*20-10;
 		if(value[i]<1)
 			value[i]=1;
-		if (sta){
-			if (spin[i] == '1'){
-				sell(i);
-			}
-			if (spin[i] == '0'){
-				purchase(i);
-			}
-		}
-		if (stb){
-			if (spin[i]=='1'){
-				purchase(i);
-			}
-			if (spin[i]=='0'){
-				sell(i);
-			}
-		}
+		// if (sta){
+		// 	if (spin[i] == '1'){
+		// 		sell(i);
+		// 	}
+		// 	if (spin[i] == '0'){
+		// 		purchase(i);
+		// 	}
+		// }
+		// if (stb){
+		// 	if (spin[i]=='1'){
+		// 		purchase(i);
+		// 	}
+		// 	if (spin[i]=='0'){
+		// 		sell(i);
+		// 	}
+		// }
 	}
-	clearText.text("Total: "+ (dotproduct(value, position) + money));
 	posis.filter(function(d) { return d+1; })
 			.attr("class", function(d) { return "posi t" + position[d]; });
 
