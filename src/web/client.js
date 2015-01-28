@@ -140,6 +140,9 @@ function Init(){
 		.attr("height", cellSize)
 		.attr("x", function(d){return d%10*cellSize;})
 		.attr("y", function(d){return Math.floor(d/10)*cellSize;})
+		.on("mousemove", function(d){
+			showTrend(d, [d%10*(cellSize)+5, Math.floor(d/10)*(cellSize)+30] );
+		})
 		.on("click", function(d){purchase(d);})
 		.on("contextmenu", function(d){sell(d);	d3.event.preventDefault();})
 		.on("mousewheel", function(d){Wheel(d);});
@@ -157,6 +160,7 @@ function Init(){
 	d3.select(self.frameElement).style("height", "2910px");
 
 }
+
 function Wheel(d){
 	var delta = window.event.wheelDelta;
 	if(delta > 0)purchase(d);
@@ -234,6 +238,16 @@ function showinfo(data, position){
 	// 	.duration(500)
 	// 	.style("font-size", "x-large")
 	// 	.remove();
+}
+
+function showTrend(d, pos){
+	svg2.append("rect")
+		.attr("transform", "translate(" + pos + ")")
+		.attr("width", 100)
+		.attr("height", 100)
+		.transition()
+		.duration(500)
+		.remove();
 }
 
 function purchase(data){
