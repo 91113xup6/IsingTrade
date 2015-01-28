@@ -1,3 +1,6 @@
+var Trend, Line, lineFunction;
+var lineData = [50, 10, 37, 40, 24, 31, 9, 49, 8, 26];
+ 
 function Init(){
 //	Connection.connect();
 	var parts = window.location.search.substr(1).split("&");
@@ -96,7 +99,7 @@ function Init(){
 		// .attr("transform", "translate(0, 0)")
 		.text("Money: "+money);
 	
-	var Trend;
+	
 
 	svg1 = d3.select("body").selectAll("svg")
 		.data("S")
@@ -133,6 +136,7 @@ function Init(){
 		.attr("class", "BW")
 		.append("g")
 		.attr("transform", "translate(50, 50)");
+
 	
 	posis = svg2.selectAll(".posi")
 		.data(d3.range(0,100))
@@ -142,7 +146,7 @@ function Init(){
 		.attr("height", cellSize)
 		.attr("x", function(d){return d%10*cellSize;})
 		.attr("y", function(d){return Math.floor(d/10)*cellSize;})
-		.on("mouseenter", function(d){showTrend(d, [d%10*(cellSize)+5, Math.floor(d/10)*(cellSize)+30] );})
+		.on("mouseenter", function(d){showTrend(d, [d%10*(cellSize)+50, Math.floor(d/10)*(cellSize)+50]);})
 		.on("click", function(d){purchase(d);})
 		.on("contextmenu", function(d){sell(d);	d3.event.preventDefault();})
 		.on("mousewheel", function(d){Wheel(d);	d3.event.preventDefault();});
@@ -159,6 +163,8 @@ function Init(){
 	
 	d3.select(self.frameElement).style("height", "2910px");
 
+	Trend = svg2.append("rect");
+	Line = svg2.append("path");
 }
 
 function Wheel(d){
@@ -239,17 +245,30 @@ function showinfo(data, position){
 	// 	.style("font-size", "x-large")
 	// 	.remove();
 }
-
-function showTrend(d, pos){
-	/*svg2.append("rect")
-		.attr("transform", "translate(" + pos + ")")
-		.attr("width", 100)
-		.attr("height", 100)
-		.transition()
-		.duration(200)
-		.remove();*/
+function UD(){
+	lineData.shift();
+	lineData.push(Math.floor((Math.random() * 50) + 1));
+	Line.attr("d", lineFunction(lineData));
 }
+function showTrend(d, pos){
+	Trend.attr("transform", "translate(" + pos + ")")
+		.attr("width", 100)
+		.attr("height", 100);
+	//The data for our line
+	
+	//This is the accessor function we talked about above
+	lineFunction = d3.svg.line()
+                          .x(function(d, i) { return pos[0] + 10 * i + 5; })
+                          .y(function(d) { return pos[1] + 2 * d; })
+                          .interpolate("linear");
 
+	//The line SVG Path we draw
+	Line.attr("d", lineFunction(lineData))
+		.attr("stroke", "blue")
+		.attr("stroke-width", 2)
+		.attr("fill", "none");
+}
+setInterval(UD, 1000);
 function purchase(data){
 	if (position[data] < 9 && money>=value[data]){
 		money -= value[data];
