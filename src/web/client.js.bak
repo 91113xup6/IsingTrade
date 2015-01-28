@@ -142,10 +142,10 @@ function Init(){
 		.attr("height", cellSize)
 		.attr("x", function(d){return d%10*cellSize;})
 		.attr("y", function(d){return Math.floor(d/10)*cellSize;})
-		.on("mouseenter", function(d){showTrend(d, [d%10*(cellSize)+5, Math.floor(d/10)*(cellSize)+30] );})
 		.on("click", function(d){purchase(d);})
 		.on("contextmenu", function(d){sell(d);	d3.event.preventDefault();})
-		.on("mousewheel", function(d){Wheel(d);	d3.event.preventDefault();});
+		.on("mousewheel", function(d){Wheel(d);	d3.event.preventDefault();})
+		.on("mouseenter", function(d){showTrend(d, [d%10*(cellSize)+5, Math.floor(d/10)*(cellSize)+30] );});
 		// .on("mouseenter", function(d){svg2
 		// 							  .append("line")
 		// 							  .attr("stroke-width", "5")
@@ -241,13 +241,13 @@ function showinfo(data, position){
 }
 
 function showTrend(d, pos){
-	/*svg2.append("rect")
+	svg2.append("rect")
 		.attr("transform", "translate(" + pos + ")")
 		.attr("width", 100)
 		.attr("height", 100)
 		.transition()
 		.duration(200)
-		.remove();*/
+		.remove();
 }
 
 function purchase(data){
