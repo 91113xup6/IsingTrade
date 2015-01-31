@@ -91,7 +91,7 @@ def command_loop():
             elif order[0] == 'B':
                 B = eval(order[1:])    
     except KeyboardInterrupt:
-        pass
+        raise SystemExit
 
 
 def in_loop():
@@ -104,13 +104,15 @@ def in_loop():
     try:
         while True:
             sleep(.01)
-            (message_type, session_id, data) = in_socket.recv_multipart()
+            (message_type, temp_session_id, data) = in_socket.recv_multipart()
             # print("msg: "+message_type)
             if message_type == b'connect':#.encode('utf-8'):
-                sent = True
+                # sent = True
+                session_id += temp_session_id
                 A = lattice()
             if message_type == b'disconnect':#.encode('utf-8'):
-                sent = False
+                # sent = False
+                session_id.remove(temp_session_id)
 
     except KeyboardInterrupt:
         pass
@@ -177,8 +179,8 @@ def main():
                                                  , 'utf-8')
                                    ])
 
-            if sent:
-                out_socket.send_multipart(['message'.encode('utf-8'), session_id,
+            for x in session_id:
+                out_socket.send_multipart(['message'.encode('utf-8'), x,
                                            bytes(''.join(map(lambda x: str(int(x)),
                                                              slice_(A.spin).flatten()))
                                                  +','.join(map(lambda x: str(int(x)),
