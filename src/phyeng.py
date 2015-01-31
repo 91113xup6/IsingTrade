@@ -100,7 +100,7 @@ def in_loop():
     global display_id
     global session_id
     global sent
-    global A
+    # global A
     try:
         while True:
             sleep(.01)
@@ -108,12 +108,14 @@ def in_loop():
             # print("msg: "+message_type)
             if message_type == b'connect':#.encode('utf-8'):
                 # sent = True
-                session_id += temp_session_id
-                A = lattice()
+                session_id.append(temp_session_id)
+                # A = lattice()
             if message_type == b'disconnect':#.encode('utf-8'):
                 # sent = False
-                session_id.remove(temp_session_id)
-
+                try:
+                    session_id.remove(temp_session_id)
+                except:
+                    pass
     except KeyboardInterrupt:
         pass
 
@@ -123,6 +125,7 @@ def din_loop():
     din_socket.connect("tcp://127.0.0.1:9240")
     global dsent
     global dsession_id
+    global A
     try:
         while True:
             sleep(.01)
@@ -130,6 +133,7 @@ def din_loop():
             # print("dmsg: "+dmessage_type)
             if dmessage_type == b'connect':#.encode('utf-8'):
                 dsent = True
+                A = lattice()
             if dmessage_type == b'disconnect':#.encode('utf-8'):
                 dsent = False
 
@@ -138,15 +142,15 @@ def din_loop():
 
 
 def main():
+    global session_id
+    session_id = []
     global display_id
     display_id = False
     global sent
     global dsent
     sent = False
     dsent = False
-    # plt.ion()
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111)
+
     global A
     A = lattice()
     t_phys = threading.Thread(target=phys_loop)
