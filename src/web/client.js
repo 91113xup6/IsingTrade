@@ -285,8 +285,8 @@ function purchase(data){
 	}
 }
 
-function op_purchase(data){
-	money -= value[data];
+function op_purchase(data, val){
+	money -= val
 	position[data] += 1;
 	moneytext.text("Money: "+money);
 	if (money<5000){
@@ -295,7 +295,6 @@ function op_purchase(data){
 
 	posis.filter(function(d) { return d+1; })
 		.attr("class", function(d) { return "posi t" + position[d]; });
-	op = "n";
 
 }
 

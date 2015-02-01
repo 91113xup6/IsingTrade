@@ -40,6 +40,7 @@ $(function () {
 				console.log('Connection opened');
 				console.log('Sending: echo');
 				socket.send("echo");
+				socket.send("disp");
 				State.connected();
 			};
 			socket.onmessage = function (e) {

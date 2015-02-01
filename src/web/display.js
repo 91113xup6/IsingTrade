@@ -32,6 +32,7 @@ function Init(){
 			 200, 200, 200, 200, 200, 200, 200, 200, 200];
 	
 	// money = 1.0e5;
+	money = [100000, 100000];
 	
 	var width = 500,
 		height = 500,
@@ -56,6 +57,11 @@ function Init(){
 								})
 		.attr("id", function(d){return d;})
 		.text(function(d){return d;});
+	var moneytext0 = d3.select("body").append("h1")
+		.text(money[0]);
+	var moneytext1 = d3.select("body").append("h1")
+		.text(money[1]);
+
 	// .attr("disabled", function(d){switch(d){case "connect": return "false";
 		// 										case "disconnect": return "true";
 		// 									   };
