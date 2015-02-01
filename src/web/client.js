@@ -9,7 +9,7 @@ function Init(){
 		var temp = parts[i].split("=");
 		$_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
 	}
-	sta = false, stb = false, stc = false;
+	sta = false, stb = false, stc = false, st1=false, st2 = false, st3 = false;
 	spin = [ 1.,  1.,  1.,  0.,  1.,  0.,  1.,  0.,  0.,  0.,  0.,  1.,  0.,
         1.,  0.,  1.,  1.,  0.,  0.,  1.,  0.,  1.,  0.,  0.,  0.,  1.,
         0.,  0.,  0.,  1.,  1.,  1.,  1.,  0.,  1.,  0.,  0.,  0.,  0.,
@@ -74,7 +74,7 @@ function Init(){
 
 	
 	options = strategy_select.selectAll("option")
-		.data(["Select Strategy", "A", "B", "No"])
+		.data(["Select Strategy", "A", "B", "small","buy","3", "No"])
 		.enter()
 		.append("option")
 		.attr("value", function(){})
@@ -134,7 +134,7 @@ function Init(){
 
 	svg2 = d3.select("body")
 		.append("svg")
-		.attr("width", width+150)
+		.attr("width", width+50)
 		.attr("height", height+50)
 		.attr("class", "BW")
 		.append("g")
@@ -207,14 +207,38 @@ function change(){
 	case "A":
 		sta = true;
 		stb = false;
+		st1 = false;
+		st2 = false;
+		st3 = false;
 		break;
 	case "B":
 		sta = false;
 		stb = true;
+		st1 = false;
+		st2 = false;
+		st3 = false;
 		break;
+	case "small":
+		sta = false;
+		stb = false;
+		st1 = true;
+		st2 = false;
+		st3 = false;
+		break;
+	case "buy":
+		sta = false;
+		stb = false;
+		st1 = false;
+		st2 = true;
+		st3 = false;
+		break;
+	
 	case "No":
 	 	sta = false;
 	 	stb = false;
+		st1 = false;
+		st2 = false;
+		st3 = false;
 		break;
 	}
 }
@@ -261,12 +285,12 @@ function showinfo(data, position){
 	// 	.style("font-size", "x-large")
 	// 	.remove();
 }
-function UD(){
-	lineData.shift();
-	lineData.push(Math.floor((Math.random() * 50) + 1));
+// function UD(){
+// 	lineData.shift();
+// 	lineData.push(Math.floor((Math.random() * 50) + 1));
 	
-	Line.attr("d", lineFunction(lineData));
-}
+// 	Line.attr("d", lineFunction(lineData));
+// }
 function showTrend(d, pos){
 	Trend.attr("transform", "translate(" + pos + ")")
 		
@@ -275,9 +299,14 @@ function showTrend(d, pos){
                           .y(function(d) { return pos[1] + 2 * d; })
                           .interpolate("linear");
 
-	Line.attr("d", lineFunction(lineData));
+	//	Line.attr("d", lineFunction(lineData));
+	var tmp = [];
+	for(i=0;i<oldvalue.length;i++){
+		tmp.push(oldvalue[i][d]/10);
+	}
+	Line.attr("d", lineFunction(tmp));
 }
-setInterval(UD, 1000);
+// setInterval(UD, 1000);
 function purchase(data){
 	if (money >= value[data]){
 		Connection.send("p"+data+"v"+value[data]);
@@ -285,17 +314,16 @@ function purchase(data){
 	}
 }
 
-function op_purchase(data){
-	money -= value[data];
+function op_purchase(data, val){
+	money -= val
 	position[data] += 1;
 	moneytext.text("Money: "+money);
 	if (money<5000){
 		moneytext.transition().style("color","red");
 	}
 
-	posis.filter(function(d) { return d+1; })
+	posis.filter(function(d) { return d; })
 		.attr("class", function(d) { return "posi t" + position[d]; });
-	op = "n";
 
 }
 
@@ -306,9 +334,9 @@ function sell(data){
 		position[data] -= 1;
 		moneytext.text("Money: "+money);
 		if (money>5000){
-			moneytext.transition().style("color","#606468");
+			moneytext.style("color","#606468");
 		}
-		posis.filter(function(d) { return d+1; })
+		posis.filter(function(d) { return d; })
 			.attr("class", function(d) { return "posi t" + position[d]; });
 	}
 	
@@ -347,6 +375,18 @@ function Change(data_s, data_v){
 				sell(i);
 			}
 		}
+		// if(st1){
+		// 	if (value[i] < 200){
+		// 		purchase(i);
+		// 	}
+		// 	if (value[i]> 300){
+		// 		sell(i);
+		// 	}
+		// }
+		// if (st2){
+		// 	if (Math.random() > 0.8)
+		// 		purchase(i);
+		// }
 	}
 	clearText.text("Total: "+ (dotproduct(value, position) + money));
 	posis.filter(function(d) { return d+1; })

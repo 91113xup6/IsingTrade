@@ -32,6 +32,7 @@ function Init(){
 			 200, 200, 200, 200, 200, 200, 200, 200, 200];
 	
 	// money = 1.0e5;
+	money = [100000, 100000];
 	
 	var width = 500,
 		height = 500,
@@ -56,6 +57,13 @@ function Init(){
 								})
 		.attr("id", function(d){return d;})
 		.text(function(d){return d;});
+	d3.select("body").append("div").style("height", 100+"px");
+	var score = d3.select("body").append("div").style("height", 100+"px");
+	moneytext0 = score.append("div").style("width", 200+"px").style("float", "left").style("margin-left", 200+"px").style("font-size", 50+"px")
+		.text(money[0]);
+	moneytext1 = score.append("div").style("width", 200+"px").style("margin-left", 600+"px").style("font-size", 50+"px")
+		.text(money[1]);
+
 	// .attr("disabled", function(d){switch(d){case "connect": return "false";
 		// 										case "disconnect": return "true";
 		// 									   };
@@ -98,6 +106,8 @@ function Init(){
 		.attr("width", width+50)
 		.attr("height", height+50)
 		.attr("class", "RdYlGn")
+		.style("display", "block")
+		.style("margin", "auto")
 		.append("g")
 		.attr("transform", "translate(50, 50)");
 
@@ -120,22 +130,22 @@ function Init(){
 	spins.filter(function(d) { return d+1; })
 		.attr("class", function(d) { return "spin q" + spin[d]; });
 
-	svg2 = d3.select("body")
-		.append("svg")
-		.attr("width", width+150)
-		.attr("height", height+50)
-		.attr("class", "BW")
-		.append("g")
-		.attr("transform", "translate(150, 50)");
+	// svg2 = d3.select("body")
+	// 	.append("svg")
+	// 	.attr("width", width+150)
+	// 	.attr("height", height+50)
+	// 	.attr("class", "BW")
+	// 	.append("g")
+	// 	.attr("transform", "translate(150, 50)");
 	
-	posis = svg2.selectAll(".posi")
-		.data(d3.range(0,100))
-		.enter().append("rect")
-		.attr("class", "posi")
-		.attr("width", cellSize)
-		.attr("height", cellSize)
-		.attr("x", function(d){return d%10*cellSize;})
-		.attr("y", function(d){return Math.floor(d/10)*cellSize;})
+	// posis = svg2.selectAll(".posi")
+	// 	.data(d3.range(0,100))
+	// 	.enter().append("rect")
+	// 	.attr("class", "posi")
+	// 	.attr("width", cellSize)
+	// 	.attr("height", cellSize)
+	// 	.attr("x", function(d){return d%10*cellSize;})
+	// 	.attr("y", function(d){return Math.floor(d/10)*cellSize;})
 		// .on("click", function(d){purchase(d);})
 		// .on("contextmenu", function(d){sell(d);	d3.event.preventDefault();});
 		// .on("mouseenter", function(d){svg2
@@ -146,10 +156,10 @@ function Init(){
 		// 							  .attr("x2", (d%10*cellSize+500).toString())
 		// 							  .attr("y2", (Math.floor(d/10)*cellSize+500).toString());
 		// 							 });
-	posis.filter(function(d) { return d+1; })
-		.attr("class", function(d) { return "posi t" + position[d]; });
+	// posis.filter(function(d) { return d+1; })
+	// 	.attr("class", function(d) { return "posi t" + position[d]; });
 	
-	d3.select(self.frameElement).style("height", "2910px");
+	d3.select(self.frameElement).style("height", "1024px");
 
 }
 
@@ -284,8 +294,8 @@ function Change(data_s, data_v){
 		// 	}
 		// }
 	}
-	posis.filter(function(d) { return d+1; })
-			.attr("class", function(d) { return "posi t" + position[d]; });
+	// posis.filter(function(d) { return d+1; })
+	// 		.attr("class", function(d) { return "posi t" + position[d]; });
 
 	var svg = d3.select("body").selectAll("svg")
 	spins.filter(function(d) { return d+1; })

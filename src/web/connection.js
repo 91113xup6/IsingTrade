@@ -49,9 +49,8 @@ $(function () {
 				if (e.data[0] == "g"){
 					position = e.data.substr(1).split('').map(eval);
 				} else if(e.data.substring(0, 2) == 'ok'){
-					op_purchase(eval(e.data.substr(2)));
-				} else if(e.data == 'no'){
-					op = "n";
+					tmp = e.data.substr(2).split('v');
+					op_purchase(eval(tmp[0]), eval(tmp[1]));
 				} else {
 					Change(e.data.substring(0, 100), e.data.substring(100) );
 				}
