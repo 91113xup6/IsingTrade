@@ -110,11 +110,11 @@ def in_loop():
                 dsession_id = temp_session_id
                 dsent = True
             # print("msg: "+message_type)
-            else if message_type == b'connect':#.encode('utf-8'):
+            elif message_type == b'connect':#.encode('utf-8'):
                 # sent = True
                 session_id.append(temp_session_id)
                 # A = lattice()
-            else if message_type == b'disconnect':#.encode('utf-8'):
+            elif message_type == b'disconnect':#.encode('utf-8'):
                 # sent = False
                 try:
                     session_id.remove(temp_session_id)
