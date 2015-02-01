@@ -110,11 +110,11 @@ def in_loop():
                 dsession_id = temp_session_id
                 dsent = True
             # print("msg: "+message_type)
-            if message_type == b'connect':#.encode('utf-8'):
+            else if message_type == b'connect':#.encode('utf-8'):
                 # sent = True
                 session_id.append(temp_session_id)
                 # A = lattice()
-            if message_type == b'disconnect':#.encode('utf-8'):
+            else if message_type == b'disconnect':#.encode('utf-8'):
                 # sent = False
                 try:
                     session_id.remove(temp_session_id)
@@ -178,7 +178,7 @@ def main():
         while True:
             sleep(1)
             if dsent:
-                display_socket.send_multipart(['message'.encode('utf-8'), dsession_id,
+                out_socket.send_multipart(['message'.encode('utf-8'), dsession_id,
                                            bytes(''.join(map(lambda x: str(int(x)),
                                                              slice_(A.spin).flatten()))
                                                  +','.join(map(lambda x: str(int(x)),
