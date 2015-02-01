@@ -293,8 +293,8 @@ function Change(data_s, data_v){
 		// 	}
 		// }
 	}
-	posis.filter(function(d) { return d+1; })
-			.attr("class", function(d) { return "posi t" + position[d]; });
+	// posis.filter(function(d) { return d+1; })
+	// 		.attr("class", function(d) { return "posi t" + position[d]; });
 
 	var svg = d3.select("body").selectAll("svg")
 	spins.filter(function(d) { return d+1; })
