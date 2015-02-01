@@ -99,9 +99,9 @@ def in_loop():
     in_socket.connect("tcp://127.0.0.1:9241")
     global dsession_id
     global session_id
-    global sent
+    # global sent
     global dsent
-    # global A
+    global A
     try:
         while True:
             sleep(.01)
@@ -109,6 +109,7 @@ def in_loop():
             if message_type == b'dconnect':
                 dsession_id = temp_session_id
                 dsent = True
+                A = lattice()
             # print("msg: "+message_type)
             elif message_type == b'connect':#.encode('utf-8'):
                 # sent = True

@@ -58,7 +58,7 @@ $(function () {
 			}
 			socket.onclose = function () {
 				console.log('Connection closed');
-				// socket.send("DISCONNECT");
+				//socket.send("ddis");
 				State.disconnected();
 			}
 		},

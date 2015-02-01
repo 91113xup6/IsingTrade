@@ -285,12 +285,12 @@ function showinfo(data, position){
 	// 	.style("font-size", "x-large")
 	// 	.remove();
 }
-function UD(){
-	lineData.shift();
-	lineData.push(Math.floor((Math.random() * 50) + 1));
+// function UD(){
+// 	lineData.shift();
+// 	lineData.push(Math.floor((Math.random() * 50) + 1));
 	
-	Line.attr("d", lineFunction(lineData));
-}
+// 	Line.attr("d", lineFunction(lineData));
+// }
 function showTrend(d, pos){
 	Trend.attr("transform", "translate(" + pos + ")")
 		
@@ -299,9 +299,10 @@ function showTrend(d, pos){
                           .y(function(d) { return pos[1] + 2 * d; })
                           .interpolate("linear");
 
-	Line.attr("d", lineFunction(lineData));
+//	Line.attr("d", lineFunction(lineData));
+	Line.attr("d", lineFunction(oldvalue[d]));
 }
-setInterval(UD, 1000);
+// setInterval(UD, 1000);
 function purchase(data){
 	if (money >= value[data]){
 		Connection.send("p"+data+"v"+value[data]);
