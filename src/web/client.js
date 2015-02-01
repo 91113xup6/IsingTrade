@@ -280,7 +280,7 @@ function showTrend(d, pos){
 setInterval(UD, 1000);
 function purchase(data){
 	Connection.send(p+data);
-	while true{
+	while (true){
 		if (op == true && money>=value[data]){
 			money -= value[data];
 			position[data] += 1;
