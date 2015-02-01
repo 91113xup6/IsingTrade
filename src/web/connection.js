@@ -47,7 +47,7 @@ $(function () {
 				// log(e.data);
 				// Change(e.data);
 				if (e.data[0] == "g"){
-					position = e.data.substring(1,).split('').map(eval);
+					position = e.data.substr(1).split('').map(eval);
 				} else if(e.data == 'ok'){
 					op = true;
 				} else if(e.data == 'no'){

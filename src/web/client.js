@@ -25,7 +25,7 @@ function Init(){
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 					0, 0, 0, 0, 0, 0, 0, 0];
 
-	Connection.send("g");
+	// Connection.send("g");
 	op = "n";
 	oldvalue = [];
 	value = [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
@@ -279,7 +279,7 @@ function showTrend(d, pos){
 }
 setInterval(UD, 1000);
 function purchase(data){
-	Connection.send(p+data);
+	Connection.send("p"+data);
 	while (true){
 		if (op == true && money>=value[data]){
 			money -= value[data];
