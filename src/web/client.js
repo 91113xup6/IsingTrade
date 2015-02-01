@@ -375,18 +375,18 @@ function Change(data_s, data_v){
 				sell(i);
 			}
 		}
-		if(st1){
-			if (value[i] < 200){
-				purchase(i);
-			}
-			if (value[i]> 300){
-				sell(i);
-			}
-		}
-		if (st2){
-			if (Math.random() > 0.8)
-				purchase(i);
-		}
+		// if(st1){
+		// 	if (value[i] < 200){
+		// 		purchase(i);
+		// 	}
+		// 	if (value[i]> 300){
+		// 		sell(i);
+		// 	}
+		// }
+		// if (st2){
+		// 	if (Math.random() > 0.8)
+		// 		purchase(i);
+		// }
 	}
 	clearText.text("Total: "+ (dotproduct(value, position) + money));
 	posis.filter(function(d) { return d+1; })
