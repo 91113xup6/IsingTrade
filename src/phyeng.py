@@ -91,7 +91,7 @@ def command_loop():
             elif order[0] == 'B':
                 B = eval(order[1:])    
     except KeyboardInterrupt:
-        pass
+        raise SystemExit
 
 
 def in_loop():
@@ -100,18 +100,22 @@ def in_loop():
     global display_id
     global session_id
     global sent
-    global A
+    # global A
     try:
         while True:
             sleep(.01)
-            (message_type, session_id, data) = in_socket.recv_multipart()
+            (message_type, temp_session_id, data) = in_socket.recv_multipart()
             # print("msg: "+message_type)
             if message_type == b'connect':#.encode('utf-8'):
-                sent = True
-                A = lattice()
+                # sent = True
+                session_id.append(temp_session_id)
+                # A = lattice()
             if message_type == b'disconnect':#.encode('utf-8'):
-                sent = False
-
+                # sent = False
+                try:
+                    session_id.remove(temp_session_id)
+                except:
+                    pass
     except KeyboardInterrupt:
         pass
 
@@ -121,6 +125,7 @@ def din_loop():
     din_socket.connect("tcp://127.0.0.1:9240")
     global dsent
     global dsession_id
+    global A
     try:
         while True:
             sleep(.01)
@@ -128,6 +133,7 @@ def din_loop():
             # print("dmsg: "+dmessage_type)
             if dmessage_type == b'connect':#.encode('utf-8'):
                 dsent = True
+                A = lattice()
             if dmessage_type == b'disconnect':#.encode('utf-8'):
                 dsent = False
 
@@ -136,15 +142,15 @@ def din_loop():
 
 
 def main():
+    global session_id
+    session_id = []
     global display_id
     display_id = False
     global sent
     global dsent
     sent = False
     dsent = False
-    # plt.ion()
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111)
+
     global A
     A = lattice()
     t_phys = threading.Thread(target=phys_loop)
@@ -177,8 +183,8 @@ def main():
                                                  , 'utf-8')
                                    ])
 
-            if sent:
-                out_socket.send_multipart(['message'.encode('utf-8'), session_id,
+            for x in session_id:
+                out_socket.send_multipart(['message'.encode('utf-8'), x,
                                            bytes(''.join(map(lambda x: str(int(x)),
                                                              slice_(A.spin).flatten()))
                                                  +','.join(map(lambda x: str(int(x)),

@@ -43,10 +43,18 @@ $(function () {
 				State.connected();
 			};
 			socket.onmessage = function (e) {
-				console.log('Recieved: ' + e.data);
+				// console.log('Recieved: ' + e.data);
 				// log(e.data);
 				// Change(e.data);
-				Change(e.data.substring(0, 100), e.data.substring(100) );
+				if (e.data[0] == "g"){
+					position = e.data.substr(1).split('').map(eval);
+				} else if(e.data.substring(0, 2) == 'ok'){
+					op_purchase(eval(e.data.substr(2)));
+				} else if(e.data == 'no'){
+					op = "n";
+				} else {
+					Change(e.data.substring(0, 100), e.data.substring(100) );
+				}
 			}
 			socket.onclose = function () {
 				console.log('Connection closed');

@@ -24,6 +24,9 @@ function Init(){
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 					0, 0, 0, 0, 0, 0, 0, 0];
+
+	// Connection.send("g");
+	op = "n";
 	oldvalue = [];
 	value = [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
@@ -276,23 +279,29 @@ function showTrend(d, pos){
 }
 setInterval(UD, 1000);
 function purchase(data){
-	if (position[data] < 9 && money>=value[data]){
-		money -= value[data];
-		position[data] += 1;
-		moneytext.text("Money: "+money);
-		if (money<5000){
-			moneytext.transition().style("color","red");
-		}
+	if (money >= value[data]){
+		Connection.send("p"+data+"v"+value[data]);
 
-		posis.filter(function(d) { return d+1; })
-			.attr("class", function(d) { return "posi t" + position[d]; });
 	}
-	
+}
+
+function op_purchase(data){
+	money -= value[data];
+	position[data] += 1;
+	moneytext.text("Money: "+money);
+	if (money<5000){
+		moneytext.transition().style("color","red");
+	}
+
+	posis.filter(function(d) { return d+1; })
+		.attr("class", function(d) { return "posi t" + position[d]; });
+	op = "n";
+
 }
 
 function sell(data){
-
 	if (position[data] > 0){
+		Connection.send("s"+data+"v"+value[data]);
 		money += value[data]
 		position[data] -= 1;
 		moneytext.text("Money: "+money);
