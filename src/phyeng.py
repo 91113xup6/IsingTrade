@@ -22,7 +22,7 @@ from scipy.stats import rv_discrete
 
 from numba import jit
 L = 20
-T = 10
+T = 500
 B = 0
 
 
