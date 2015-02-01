@@ -302,7 +302,7 @@ function showTrend(d, pos){
 	//	Line.attr("d", lineFunction(lineData));
 	var tmp = [];
 	for(i=0;i<oldvalue.length;i++){
-		tmp.append(eval(oldvalue[i][d]));
+		tmp.push(oldvalue[i][d]);
 	}
 	Line.attr("d", lineFunction(tmp));
 }
