@@ -74,7 +74,7 @@ function Init(){
 
 	
 	options = strategy_select.selectAll("option")
-		.data(["Select Strategy", "A", "B", "以小搏大","隨機買入","3", "No"])
+		.data(["Select Strategy", "A", "B", "small","buy","3", "No"])
 		.enter()
 		.append("option")
 		.attr("value", function(){})
@@ -218,14 +218,14 @@ function change(){
 		st2 = false;
 		st3 = false;
 		break;
-	case "以小搏大":
+	case "small":
 		sta = false;
 		stb = false;
 		st1 = true;
 		st2 = false;
 		st3 = false;
 		break;
-	case "隨機買入":
+	case "buy":
 		sta = false;
 		stb = false;
 		st1 = false;
