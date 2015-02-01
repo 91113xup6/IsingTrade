@@ -57,9 +57,9 @@ function Init(){
 								})
 		.attr("id", function(d){return d;})
 		.text(function(d){return d;});
-	var moneytext0 = d3.select("body").append("h1")
+	moneytext0 = d3.select("body").append("h1")
 		.text(money[0]);
-	var moneytext1 = d3.select("body").append("h1")
+	moneytext1 = d3.select("body").append("h1")
 		.text(money[1]);
 
 	// .attr("disabled", function(d){switch(d){case "connect": return "false";

@@ -134,7 +134,7 @@ function Init(){
 
 	svg2 = d3.select("body")
 		.append("svg")
-		.attr("width", width+150)
+		.attr("width", width+50)
 		.attr("height", height+50)
 		.attr("class", "BW")
 		.append("g")
