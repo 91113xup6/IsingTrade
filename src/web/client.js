@@ -304,7 +304,7 @@ function showTrend(d, pos){
 	for(i=0;i<oldvalue.length;i++){
 		tmp.append(eval(oldvalue[d]));
 	}
-	Line.attr("d", lineFunction(tmp);
+	Line.attr("d", lineFunction(tmp));
 }
 // setInterval(UD, 1000);
 function purchase(data){
