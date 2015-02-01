@@ -376,7 +376,7 @@ function Change(data_s, data_v){
 			}
 		}
 		if(st1){
-			if (value[i] < 150){
+			if (value[i] < 200){
 				purchase(i);
 			}
 			if (value[i]> 300){
@@ -384,7 +384,7 @@ function Change(data_s, data_v){
 			}
 		}
 		if (st2){
-			if (Math.random > 0.8)
+			if (Math.random() > 0.8)
 				purchase(i);
 		}
 	}
