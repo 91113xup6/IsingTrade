@@ -108,7 +108,7 @@ function Init(){
 		.append("g")
 		.attr("transform", "translate(50, 50)");
 
-	div = d3.select("body").append("div").attr("class","tooltip");
+	div = d3.select("body").append("div").attr("class","tooltip").style("display", "none");
 	spins = svg1.selectAll(".spin")
 		.data(d3.range(0,100))
 		.enter().append("rect")
