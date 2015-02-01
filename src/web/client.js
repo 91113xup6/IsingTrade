@@ -24,6 +24,9 @@ function Init(){
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 					0, 0, 0, 0, 0, 0, 0, 0];
+
+	Connection.send("g");
+	op = "n";
 	oldvalue = [];
 	value = [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
        200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200,
@@ -276,16 +279,24 @@ function showTrend(d, pos){
 }
 setInterval(UD, 1000);
 function purchase(data){
-	if (position[data] < 9 && money>=value[data]){
-		money -= value[data];
-		position[data] += 1;
-		moneytext.text("Money: "+money);
-		if (money<5000){
-			moneytext.transition().style("color","red");
-		}
+	Connection.send(p+data);
+	while true{
+		if (op == true && money>=value[data]){
+			money -= value[data];
+			position[data] += 1;
+			moneytext.text("Money: "+money);
+			if (money<5000){
+				moneytext.transition().style("color","red");
+			}
 
-		posis.filter(function(d) { return d+1; })
-			.attr("class", function(d) { return "posi t" + position[d]; });
+			posis.filter(function(d) { return d+1; })
+				.attr("class", function(d) { return "posi t" + position[d]; });
+			op = "n";
+			break;
+		}
+		else if (op == false){
+			break;
+		}
 	}
 	
 }
