@@ -300,9 +300,9 @@ function showTrend(d, pos){
                           .interpolate("linear");
 
 	//	Line.attr("d", lineFunction(lineData));
-	var tmp
+	var tmp = [];
 	for(i=0;i<oldvalue.length;i++){
-		tmp.append(eval(oldvalue[d]));
+		tmp.append(eval(oldvalue[i][d]));
 	}
 	Line.attr("d", lineFunction(tmp));
 }
