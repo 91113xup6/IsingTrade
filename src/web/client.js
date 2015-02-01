@@ -300,7 +300,7 @@ function showTrend(d, pos){
                           .interpolate("linear");
 
 //	Line.attr("d", lineFunction(lineData));
-	Line.attr("d", lineFunction(oldvalue[d]));
+	Line.attr("d", lineFunction(oldvalue[d].map(eval)));
 }
 // setInterval(UD, 1000);
 function purchase(data){
