@@ -299,8 +299,12 @@ function showTrend(d, pos){
                           .y(function(d) { return pos[1] + 2 * d; })
                           .interpolate("linear");
 
-//	Line.attr("d", lineFunction(lineData));
-	Line.attr("d", lineFunction(oldvalue[d].map(eval)));
+	//	Line.attr("d", lineFunction(lineData));
+	var tmp
+	for(i=0;i<oldvalue.length;i++){
+		tmp.append(eval(oldvalue[d]));
+	}
+	Line.attr("d", lineFunction(tmp);
 }
 // setInterval(UD, 1000);
 function purchase(data){
