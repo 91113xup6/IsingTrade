@@ -58,9 +58,9 @@ function Init(){
 		.attr("id", function(d){return d;})
 		.text(function(d){return d;});
 	var score = d3.select("body").append("div").style("height", 50+"px");
-	moneytext0 = score.append("div").style("width", 200+"px").style("float", "left").style("margin-left", 350+"px").style("font-size", 50+"px")
+	moneytext0 = score.append("div").style("width", 200+"px").style("float", "left").style("margin-left", 200+"px").style("font-size", 50+"px")
 		.text(money[0]);
-	moneytext1 = score.append("div").style("width", 200+"px").style("margin-left", 800+"px").style("font-size", 50+"px")
+	moneytext1 = score.append("div").style("width", 200+"px").style("margin-left", 500+"px").style("font-size", 50+"px")
 		.text(money[1]);
 
 	// .attr("disabled", function(d){switch(d){case "connect": return "false";
