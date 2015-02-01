@@ -151,9 +151,11 @@ function Init(){
 		.attr("y", function(d){return Math.floor(d/10)*cellSize;})
 		.on("mouseleave",  function(d){showTrend(d, [1000, 1000]);})
 		.on("mouseenter", function(d){
+			var x = d%10*(cellSize)+50;
+			if(x > 430)x -= 120;
 			var y = Math.floor(d/10)*(cellSize)+50;
 			if(y > 430)y -= 120;
-			showTrend(d, [d%10*(cellSize)+50, y]);
+			showTrend(d, [x, y]);
 			})
 		.on("click", function(d){purchase(d);})
 		.on("contextmenu", function(d){sell(d);	d3.event.preventDefault();})
