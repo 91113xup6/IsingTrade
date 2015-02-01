@@ -74,7 +74,7 @@ function Init(){
 
 	
 	options = strategy_select.selectAll("option")
-		.data(["Select Strategy", "A", "B", "No"])
+		.data(["Select Strategy", "A", "B", "以小搏大","隨機買入","3", "No"])
 		.enter()
 		.append("option")
 		.attr("value", function(){})
@@ -207,14 +207,38 @@ function change(){
 	case "A":
 		sta = true;
 		stb = false;
+		st1 = false;
+		st2 = false;
+		st3 = false;
 		break;
 	case "B":
 		sta = false;
 		stb = true;
+		st1 = false;
+		st2 = false;
+		st3 = false;
 		break;
+	case "以小搏大":
+		sta = false;
+		stb = false;
+		st1 = true;
+		st2 = false;
+		st3 = false;
+		break;
+	case "隨機買入":
+		sta = false;
+		stb = false;
+		st1 = false;
+		st2 = true;
+		st3 = false;
+		break;
+	
 	case "No":
 	 	sta = false;
 	 	stb = false;
+		st1 = false;
+		st2 = false;
+		st3 = false;
 		break;
 	}
 }
@@ -345,6 +369,18 @@ function Change(data_s, data_v){
 			if (spin[i]=='0'){
 				sell(i);
 			}
+		}
+		if(st1){
+			if (value[i] < 150){
+				purchase(i);
+			}
+			if (value[i]> 300){
+				sell(i);
+			}
+		}
+		if (st2){
+			if (Math.random > 0.8)
+				purchase(i);
 		}
 	}
 	clearText.text("Total: "+ (dotproduct(value, position) + money));
