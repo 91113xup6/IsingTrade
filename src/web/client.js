@@ -361,7 +361,7 @@ function Change(data_s, data_v){
 		//value[i] += eval(spin[i])*20-10;
 		if(value[i]<1)
 			value[i]=1;
-		if (sta){
+		if (sta && Math.random()> 0.8){
 			if (spin[i] == '1'){
 				sell(i);
 			}
@@ -369,7 +369,7 @@ function Change(data_s, data_v){
 				purchase(i);
 			}
 		}
-		if (stb){
+		if (stb&& Math.random()> 0.8){
 			if (spin[i]=='1'){
 				purchase(i);
 			}
